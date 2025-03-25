@@ -1,0 +1,33 @@
+IModuleGame {
+    public :
+        void init()        // récupérer les contenu de fichiers pour dans le fileContent
+                           // faire le split pour obtenir le double tableau du jeux
+
+        void handler()     // recevoir les évenement et les appliquer à la logique
+                           //   1 - modifier l'état du personnage
+                           //   2 - modifier l'état de la map
+        
+        void destroyer()   // detruire les tableaux générés
+}
+
+
+
+
+
+
+
+
+        char *fileContent  // contenu du fichier contenant les maps des jeux
+        char **gameMap     // la map du jeux suivant le fileContent
+
+
+
+
+
+
+
+                           //       + faire pause
+                                    + faire play
+
+
+
