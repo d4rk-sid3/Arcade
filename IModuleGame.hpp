@@ -52,7 +52,6 @@ class IModuleGame {
          */
         virtual void update() = 0;
 
-
         /**
          * @brief Vérifivation de l'état du jeu
          * @return L'etat du jeu
