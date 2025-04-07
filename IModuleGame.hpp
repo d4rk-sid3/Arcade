@@ -5,9 +5,6 @@
 ** IModuleGame
 */
 
-#ifndef IMODULEGAME_HPP_
-#define IMODULEGAME_HPP_
-
 /**
  * @file IModuleGame.hpp
  * @brief Définition de la classe IDisplayGame
@@ -19,53 +16,77 @@
  * @date 25 Mars 2025
  */
 
-
-
 /**
- * @class IModuleGame
+ * @class IGameModule
  * @brief Une interface représentant un module de jeu
  * 
  * Cette classe représente l'ensemble des modules de jeu et fournit 
  * les méthodes communes à elles toutes pour pouvoir les utiliser
  */
 
-class IModuleGame {
+#ifndef IMODULEGAME_HPP_
+#define IMODULEGAME_HPP_
+
+#include <vector>
+#include "GameElement.hpp"
+#include "TrackPack.hpp"
+
+
+class IGameModule {
     public:
         /**
         * @brief Destructeur par défaut.
         * 
         * Destructeur virtuel pour éviter les fuites mémoire
         */
-        ~IModuleGame() = default;
+        ~IGameModule() = default;
 
         /**
-         * @brief Initialisation
+         * @brief Initialisation les objets
          * 
-         * Initialise les données de base du module
+         * Créer les élémnts nécessaires à la réalisation du jeu
          */
         virtual void init() = 0;
 
         /**
          * @brief Mise à jour des objets du jeu
          * 
-         * Récupère les changement et les applique au objets
+         * Actualise l'état du jeu
          */
         virtual void update() = 0;
 
         /**
-         * @brief Vérifivation de l'état du jeu
-         * @return L'etat du jeu
+         * @brief Récupère les entrées de l'utlisateur
          * 
-         * Vérifie si le jeu est terminer ou pas
+         * Actualise les paramètres du jeu
+         * 
+         * @param keyCode Entrée de l'utilisateur
+         * @see TrackPack
          */
-        virtual bool is_running() = 0;
+        virtual void handleInput(TrackPack keyCode) = 0;
 
         /**
-         * @brief Destruction des objets créer
+         * @brief Renvoie l'état du jeu
          * 
-         * Détruit les assets et libère la mémoire
+         * @return Un tableau contanant chaque élément constituant le jeu
          */
-        virtual void destroyer() = 0;
+        virtual std::vector <GameElement> getGameState() const = 0;
+
+
+        /**
+         * @brief Renvoie le score du joueur
+         * 
+         * @return Les points marqués par le joueur
+         */
+        virtual int getScore() const = 0;
+
+
+        /**
+         * @brief Renvoie si le jeu est terminé ou pas
+         * 
+         * @return Vrai si le jeu est terminé Faux dans le cas contraire
+         */
+        virtual bool isGameOver() const = 0;
 };
 
 #endif /* !IMODULEGAME_HPP_ */

@@ -7,12 +7,39 @@
 
 #include "snake.hpp"
 
-snake_l::snake_l(int w, int h): d('D'), x(w / 2), y(h / 2), x_food(0), y_food(0)
+std::string readFile(const std::string& filename)
+{  
+    std::ifstream file(filename);  
+    if (!file) {  
+        std::cerr << "Error opening file: " << filename << std::endl;  
+        return "";  
+    }  
+    std::string content;  
+    std::string line;
+
+    while (std::getline(file, line)) {  
+        content += line + "\n";
+    }  
+    return content;  
+}  
+
+std::vector<std::string> readtable(const std::string& m)
 {
-    map.resize(h, std::string(w, ' ')); 
+    std::vector<std::string> newmap;
+    std::istringstream stream(m);
+    std::string line;
+    
+    while (std::getline(stream, line)) {
+        newmap.push_back(line);
+    }
+    return newmap;
+}
+
+snake_l::snake_l(int w, int h, const std::string& m): d('D'), x(w / 2), y(h / 2), x_food(0), y_food(0), map(readtable(m))
+{
     snake.push_back({x, y});  
-    map[y][x] = 'O';  
-    eatfood();  
+    map[y][x] = 'O';
+    eatfood();
 }  
 
 void snake_l::eatfood()
@@ -21,11 +48,13 @@ void snake_l::eatfood()
 
     x_food = x;
     y_food = y;
-    while (map[y_food][x_food] != ' ') {
-        x_food = std::rand() % map[0].size();  
-        y_food = std::rand() % map.size();  
-    } 
-    map[y_food][x_food] = 'X'; 
+    int len_x = map[0].size();
+    int len_y = map.size();
+        while (map[y_food][x_food] != ' ') {
+            x_food = std::rand() % len_x;  
+            y_food = std::rand() % len_y;
+        } 
+        map[y_food][x_food] = 'X';
 }
 
 void snake_l::direction(char newDirection)
@@ -34,7 +63,7 @@ void snake_l::direction(char newDirection)
         (d == 'D' && newDirection != 'U') ||   
         (d == 'L' && newDirection != 'R') ||   
         (d == 'R' && newDirection != 'L')) {  
-        d = newDirection;  
+        d = newDirection;
     }  
 }  
 
@@ -54,7 +83,7 @@ bool snake_l::move()
         new_x++;
     }
 
-    if (new_x < 0 || new_x >= map[0].size() || new_y < 0 || new_y >= map.size()) {  
+    if (map[new_y][new_x] == '#') {
         return false;
     }
 
@@ -63,16 +92,20 @@ bool snake_l::move()
             return false;
         }  
     }
+    if (!snake.empty()) {
+        map[head.second][head.first] = 'B';
+    }
 
-    snake.insert(snake.begin(), {new_x, new_y});  
+    snake.insert(snake.begin(), {new_x, new_y});
+    map[new_y][new_x] = 'O';
+
     if (new_x == x_food && new_y == y_food) {  
         eatfood();  
     } else {  
         auto tail = snake.back();  
         map[tail.second][tail.first] = ' '; 
         snake.pop_back();  
-    }  
-    map[new_y][new_x] = 'O';
+    }
     return true;  
 }  
 
@@ -86,8 +119,73 @@ snake_l::~snake_l()
 
 }
 
-snake_display::snake_display(snake_l &l): logic(l), window(sf::VideoMode(800, 600), "Snake Game")
+void snake_display::create_head()
 {
+    if (!head_texture.loadFromFile("head.png")) {
+        std::cerr << "Error loading background image" << std::endl;
+        return;
+    }
+
+    float scale = 20.0f / 1024.0f;
+    head_sprite.setTexture(head_texture);
+    head_sprite.setScale(scale, scale);
+}
+
+void snake_display::create_blob()
+{
+    if (!blob_texture.loadFromFile("blob.png")) {
+        std::cerr << "Error loading background image" << std::endl;
+        return;
+    }
+
+    float scale = 20.0f / 512.0f;
+    blob_sprite.setTexture(blob_texture);
+    blob_sprite.setScale(scale, scale);
+}
+
+void snake_display::create_wall()
+{
+    if (!wall_texture.loadFromFile("wall.png")) {
+        std::cerr << "Error loading background image" << std::endl;
+        return;
+    }
+
+    float scale = 20.0f / 216.0f;
+    wall_sprite.setTexture(wall_texture);
+    wall_sprite.setScale(scale, scale);
+}
+
+void snake_display::create_death()
+{
+    if (!death_texture.loadFromFile("xx.png")) {
+        std::cerr << "Error loading background image" << std::endl;
+        return;
+    }
+
+    float scale = 20.0f / 1024.0f;
+    death_sprite.setTexture(death_texture);
+    death_sprite.setScale(scale, scale);
+}
+
+void snake_display::create_apple()
+{
+    if (!apple_texture.loadFromFile("apple.png")) {
+        std::cerr << "Error loading background image" << std::endl;
+        return;
+    }
+
+    float scale = 20.0f / 1024.0f;
+    apple_sprite.setTexture(apple_texture);
+    apple_sprite.setScale(scale, scale);
+}
+
+snake_display::snake_display(snake_l &l): logic(l), window(sf::VideoMode(963, 600), "Snake Game")
+{
+    create_head();
+    create_blob();
+    create_wall();
+    create_death();
+    create_apple();
 }
 
 void snake_display::key_input()
@@ -126,6 +224,7 @@ void snake_display::draw()
     const auto& map = logic.getMap();  
     int cellSize = 20; 
     sf::Clock clock;
+    sf::RectangleShape cell(sf::Vector2f(cellSize, cellSize));
 
     while (window.isOpen()) {  
         sf::Event event;  
@@ -140,20 +239,27 @@ void snake_display::draw()
         window.clear();  
         for (size_t y = 0; y < map.size(); ++y) {  
             for (size_t x = 0; x < map[y].size(); ++x) {  
-                sf::RectangleShape cell(sf::Vector2f(cellSize, cellSize));  
-                cell.setPosition(x * cellSize, y * cellSize);  
 
-                if (map[y][x] == 'O') {  
-                    cell.setFillColor(sf::Color::Green);  
+                if (map[y][x] == 'O') {
+                    head_sprite.setPosition(x * cellSize, y * cellSize);
+                    window.draw(head_sprite); 
                 } else if (map[y][x] == 'X') {  
-                    cell.setFillColor(sf::Color::Red); 
-                } else {  
+                    apple_sprite.setPosition(x * cellSize, y * cellSize);
+                    window.draw(apple_sprite);
+                } else if (map[y][x] == '#'){  
+                    wall_sprite.setPosition(x * cellSize, y * cellSize);
+                    window.draw(wall_sprite);
+                }else if (map[y][x] == 'B') {
+                    blob_sprite.setPosition(x * cellSize, y * cellSize);
+                    window.draw(blob_sprite);
+                } else {
+                    cell.setPosition(x * cellSize, y * cellSize);
                     cell.setFillColor(sf::Color::Black);
-                }  
-                window.draw(cell);  
+                    window.draw(cell);
+                }
             }  
         }  
-        window.display();  
+        window.display();
     }  
 }
 
@@ -163,10 +269,11 @@ snake_display::~snake_display()
 }
 
 int main() {  
-    const int width = 40;
-    const int height = 30;  
+    const int width = 49;
+    const int height = 31;  
 
-    snake_l logic(width, height);
+    std::string mapcontent = readFile("example.txt");
+    snake_l logic(width, height, mapcontent);
     snake_display display(logic);
     display.draw();
 

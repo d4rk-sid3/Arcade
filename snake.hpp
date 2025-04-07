@@ -9,10 +9,12 @@
 #define SNAKE_HPP_
 
     #include <SFML/Graphics.hpp>  
-    #include <iostream>  
+    #include <iostream>
+    #include <fstream>
     #include <vector>  
     #include <ctime>  
-    #include <cstdlib>  
+    #include <cstdlib>
+    #include <sstream>
     #include <thread>
 
     class snake_l {
@@ -24,7 +26,7 @@
             int x, y;
 
         public:
-            snake_l(int w, int h);
+            snake_l(int w, int h, const std::string& m);
             ~snake_l();
             void eatfood();
             void direction(char newDirection);
@@ -33,11 +35,22 @@
 
     };
 
-    class snake_display {
+    class snake_display {   
         private:
             snake_l &logic;
             sf::RenderWindow window;
             sf::Event event;
+            sf::Texture head_texture;
+            sf::Texture blob_texture;
+            sf::Texture wall_texture;
+            sf::Texture death_texture;
+            sf::Texture apple_texture;
+            sf::Sprite head_sprite;
+            sf::Sprite blob_sprite;
+            sf::Sprite wall_sprite;
+            sf::Sprite death_sprite;
+            sf::Sprite apple_sprite;
+
 
         public:
             snake_display(snake_l &l);
@@ -45,6 +58,12 @@
             ~snake_display();
             void key_input();
             void move_snake(sf::Clock *clock);
+            void create_head();
+            void create_blob();
+            void create_wall();
+            void create_death();
+            void create_apple();
+
     };
 
 #endif /* !SNAKE_HPP_ */
