@@ -5,9 +5,6 @@
 ** IModuleDisplay
 */
 
-#ifndef IMODULEDISPLAY_HPP_
-#define IMODULEDISPLAY_HPP_
-
 /**
  * @file IModuleDisplay.hpp
  * @brief Définition de la classe IDisplayModule
@@ -29,6 +26,10 @@
  * les méthodes communes à elles toutes pour pouvoir les utiliser
  */
 
+#ifndef IMODULEDISPLAY_HPP_
+#define IMODULEDISPLAY_HPP_
+#include "TrackPack.hpp"
+
 class IModuleDisplay {
     public:
         /**
@@ -46,18 +47,25 @@ class IModuleDisplay {
         virtual void init() = 0;
 
         /**
-         * @brief Affichage
-         * 
-         * Gère l'affichage des assets
-         */
-        virtual void render() = 0;
-
-        /**
          * @brief Gestion des entrées utilisateur
          * 
          * Gère les entrées du clavier et de la souris
          */
         virtual void handleInput() = 0;
+    
+        /**
+         * @brief Renvoie les entrées utilisateur
+         * 
+         * @return l'enumèration TRackpack contenant l'entrée du l'utilisateur
+         */
+        virtual TrackPack getInput() = 0;
+    
+        /**
+         * @brief Affichage
+         * 
+         * Gère l'affichage des assets
+         */
+        virtual void draw() = 0;
 
         /**
          * @brief Nettoyage à la fermeture
