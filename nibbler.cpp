@@ -90,13 +90,13 @@ void Nibbler::update()
     int new_x = head.first;  
     int new_y = head.second;  
 
-    if (d == 'U') {
+    if (direction == UP) {
         new_y--;
-    } else if (d == 'D') {
+    } else if (direction == DOWN) {
         new_y++;
-    } else if (d == 'L') {
+    } else if (direction == LEFT) {
         new_x--;
-    } else if (d == 'R') {
+    } else if (direction == RIGHT) {
         new_x++;
     }
 
