@@ -13,11 +13,14 @@
     #include <ctime>  
     #include <cstdlib>  
     #include <thread>
+    #include <fstream>
+    #include <sstream>
+    #include <thread>
     #include "IModuleGame.hpp"
 
 class Snake : public IGameModule {
     public:
-        Snake(int w, int h);
+        Snake();
         ~Snake();
         void init() override;
         void update() override;
@@ -29,6 +32,7 @@ class Snake : public IGameModule {
         int getScore() const;
         std::vector <GameElement> getGameState() const;
         void handleInput(TrackPack keyCode);
+        void setall(int w, int h, const std::string& filename);
 
     private:
         std::vector<std::string> map;
@@ -40,6 +44,9 @@ class Snake : public IGameModule {
         int height;
         bool is_ended;
         int score;
+        std::vector <GameElement> element;
+        std::string m;
+        int time;
 };
 
 #endif /* !SNAKE_HPP_ */

@@ -17,6 +17,7 @@
     #include <sstream>
     #include <thread>
     #include "IModuleGame.hpp"
+    #include "IModuleDisplay.hpp"
 
     // class nibbler_display {   
     //     private:
@@ -51,20 +52,21 @@
 
     class Nibbler : public IGameModule {
         public:
-            Nibbler(int w, int h, const std::string& m);
+            Nibbler();
             ~Nibbler();
             void init() override;
             void update() override;
             void eatfood();
             bool isGameOver() const;
             const std::vector<std::string>& getMap() const;
+            std::vector <GameElement> getGameState() const;
             void handleInput(TrackPack keyCode);
+            void setall(int w, int h, const std::string& m);
 
         private:
             std::vector<std::string> map;
             std::vector<std::pair<int, int>> nibbler;
             TrackPack direction;
-            char d;
             int x_food, y_food;
             int x, y;
             int nb_fruit;
@@ -73,6 +75,19 @@
             int width;
             int height;
             bool is_ended;
+            std::vector <GameElement> element;
+            int time;
+            std::string m;
+            
+
+    };
+
+    class NibblerDisplay : public IModuleDisplay {
+        public:
+            NibblerDisplay();
+            ~NibblerDisplay();
+
+        private:
 
     };
 

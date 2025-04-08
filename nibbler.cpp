@@ -40,15 +40,25 @@ Nibbler::~Nibbler()
 
 }
 
-Nibbler::Nibbler(int w, int h, const std::string& m): d('D'), x(w / 2), y(h / 2), x_food(0), y_food(0), map(readtable(m)), nb_fruit(12), score(0)
+Nibbler::Nibbler()
 {
-    init();
 }
 
 void Nibbler::init()
 {
+    for (int a = 0; a < map.size(); a++) {
+        for (int b = 0; b < map[0].size(); b++) {
+            GameElement elem;
+            elem.setPosX(b);
+            elem.setPosY(a);
+            elem.setSymbol(map[a][b]);
+            element.push_back(elem);
+        }
+    }
     for (int i = 0; i < 4; i++) {
-        nibbler.push_back({x, y - i});  
+        int len = map.size();
+        nibbler.push_back({x, y - i});
+        element[(y * len) + x].setSymbol('O');
         map[y][x] = 'O';
     }
     eatfood();
@@ -65,6 +75,7 @@ void Nibbler::eatfood()
     int a = 0;
     while (a < nb_fruit) {
         if (map[y_food][x_food] == ' ') {
+            element[(y_food * len_y) + x_food].setSymbol('X');
             map[y_food][x_food] = 'X';
             foods.push_back({x_food, y_food});
             a++;
@@ -86,6 +97,7 @@ void Nibbler::handleInput(TrackPack keyCode)
 
 void Nibbler::update()
 {  
+    int len = map.size();
     auto head = nibbler.front();  
     int new_x = head.first;  
     int new_y = head.second;  
@@ -105,7 +117,7 @@ void Nibbler::update()
         return;
     }
 
-    for (size_t i = 1; i < nibbler.size(); ++i) {  
+    for (size_t i = 1; i < nibbler.size(); i++) {  
         if (nibbler[i] == std::make_pair(new_x, new_y)) {
             is_ended = false;
             return;
@@ -113,21 +125,26 @@ void Nibbler::update()
     }
     if (!nibbler.empty()) {
         map[head.second][head.first] = 'B';
+        element[(head.second * len) + head.first].setSymbol('B');
     }
 
     nibbler.insert(nibbler.begin(), {new_x, new_y});
+    element[(new_y * len) + new_x].setSymbol('O');
     map[new_y][new_x] = 'O';
+    
 
     for (int i = 0; i < foods.size(); i++) {
         if (foods[i] == std::make_pair(new_x, new_y)) {
             score += 10;
             std::cout << "Score: " << score << std::endl;
+            time += 10;
             is_ended = true;
             return;
         }
     }
-    auto tail = nibbler.back();  
-    map[tail.second][tail.first] = ' '; 
+    auto tail = nibbler.back();
+    element[(tail.second * len) + tail.first].setSymbol(' ');
+    map[tail.second][tail.first] = ' ';
     nibbler.pop_back();
 
     return;  
@@ -141,6 +158,28 @@ const std::vector<std::string>& Nibbler::getMap() const
 bool Nibbler::isGameOver() const
 {
     return is_ended;
+}
+
+std::vector <GameElement> Nibbler::getGameState() const
+{
+    return element;
+}
+
+void Nibbler::setall(int w, int h, const std::string& filename)
+{
+    width = w;
+    height = h;
+    m = filename;
+    direction = DOWN;
+    x = (width / 2);
+    y = (height / 2);
+    x_food = 0;
+    y_food = 0;
+    map = readtable(m);
+    nb_fruit = 12;
+    score = 0;
+    time = 20;
+    is_ended = false;
 }
 
 // void nibbler_display::create_head()
