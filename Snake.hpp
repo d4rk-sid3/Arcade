@@ -13,7 +13,7 @@
     #include <ctime>  
     #include <cstdlib>  
     #include <thread>
-    #include "../../IModuleGame.hpp"
+    #include "IModuleGame.hpp"
 
 class Snake : public IGameModule {
     public:

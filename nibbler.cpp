@@ -35,7 +35,17 @@ std::vector<std::string> readtable(const std::string& m)
     return newmap;
 }
 
-nibbler_l::nibbler_l(int w, int h, const std::string& m): d('D'), x(w / 2), y(h / 2), x_food(0), y_food(0), map(readtable(m)), nb_fruit(12), score(0)
+Nibbler::~Nibbler()
+{
+
+}
+
+Nibbler::Nibbler(int w, int h, const std::string& m): d('D'), x(w / 2), y(h / 2), x_food(0), y_food(0), map(readtable(m)), nb_fruit(12), score(0)
+{
+    init();
+}
+
+void Nibbler::init()
 {
     for (int i = 0; i < 4; i++) {
         nibbler.push_back({x, y - i});  
@@ -44,7 +54,7 @@ nibbler_l::nibbler_l(int w, int h, const std::string& m): d('D'), x(w / 2), y(h 
     eatfood();
 }
 
-void nibbler_l::eatfood()
+void Nibbler::eatfood()
 {  
     std::srand(std::time(nullptr));
 
@@ -64,17 +74,17 @@ void nibbler_l::eatfood()
     }
 }
 
-void nibbler_l::direction(char newDirection)
+void Nibbler::handleInput(TrackPack keyCode)
 {  
-    if ((d == 'U' && newDirection != 'D') ||   
-        (d == 'D' && newDirection != 'U') ||   
-        (d == 'L' && newDirection != 'R') ||   
-        (d == 'R' && newDirection != 'L')) {  
-        d = newDirection;
+    if ((direction == UP && keyCode != DOWN) ||   
+        (direction == DOWN && keyCode != UP) ||   
+        (direction == LEFT && keyCode != RIGHT) ||   
+        (direction == RIGHT && keyCode != LEFT)) {  
+        direction = keyCode;  
     }  
-}  
+}
 
-bool nibbler_l::move()
+void Nibbler::update()
 {  
     auto head = nibbler.front();  
     int new_x = head.first;  
@@ -91,12 +101,14 @@ bool nibbler_l::move()
     }
 
     if (map[new_y][new_x] == '#') {
-        return true;
+        is_ended = true;
+        return;
     }
 
     for (size_t i = 1; i < nibbler.size(); ++i) {  
-        if (nibbler[i] == std::make_pair(new_x, new_y)) {  
-            return false;
+        if (nibbler[i] == std::make_pair(new_x, new_y)) {
+            is_ended = false;
+            return;
         }  
     }
     if (!nibbler.empty()) {
@@ -110,183 +122,184 @@ bool nibbler_l::move()
         if (foods[i] == std::make_pair(new_x, new_y)) {
             score += 10;
             std::cout << "Score: " << score << std::endl;
-            return true;
+            is_ended = true;
+            return;
         }
     }
     auto tail = nibbler.back();  
     map[tail.second][tail.first] = ' '; 
     nibbler.pop_back();
 
-    return true;  
+    return;  
 }  
 
-const std::vector<std::string>& nibbler_l::getMap() const
+const std::vector<std::string>& Nibbler::getMap() const
 {  
-    return map;  
-}   
-
-nibbler_l::~nibbler_l()
-{
-
+    return map;
 }
 
-void nibbler_display::create_head()
+bool Nibbler::isGameOver() const
 {
-    if (!head_texture.loadFromFile("head.png")) {
-        std::cerr << "Error loading background image" << std::endl;
-        return;
-    }
-
-    float scale = 20.0f / 1024.0f;
-    head_sprite.setTexture(head_texture);
-    head_sprite.setScale(scale, scale);
+    return is_ended;
 }
 
-void nibbler_display::create_blob()
-{
-    if (!blob_texture.loadFromFile("blob.png")) {
-        std::cerr << "Error loading background image" << std::endl;
-        return;
-    }
+// void nibbler_display::create_head()
+// {
+//     if (!head_texture.loadFromFile("head.png")) {
+//         std::cerr << "Error loading background image" << std::endl;
+//         return;
+//     }
 
-    float scale = 20.0f / 512.0f;
-    blob_sprite.setTexture(blob_texture);
-    blob_sprite.setScale(scale, scale);
-}
+//     float scale = 20.0f / 1024.0f;
+//     head_sprite.setTexture(head_texture);
+//     head_sprite.setScale(scale, scale);
+// }
 
-void nibbler_display::create_wall()
-{
-    if (!wall_texture.loadFromFile("wall.png")) {
-        std::cerr << "Error loading background image" << std::endl;
-        return;
-    }
+// void nibbler_display::create_blob()
+// {
+//     if (!blob_texture.loadFromFile("blob.png")) {
+//         std::cerr << "Error loading background image" << std::endl;
+//         return;
+//     }
 
-    float scale = 20.0f / 216.0f;
-    wall_sprite.setTexture(wall_texture);
-    wall_sprite.setScale(scale, scale);
-}
+//     float scale = 20.0f / 512.0f;
+//     blob_sprite.setTexture(blob_texture);
+//     blob_sprite.setScale(scale, scale);
+// }
 
-void nibbler_display::create_death()
-{
-    if (!death_texture.loadFromFile("xx.png")) {
-        std::cerr << "Error loading background image" << std::endl;
-        return;
-    }
+// void nibbler_display::create_wall()
+// {
+//     if (!wall_texture.loadFromFile("wall.png")) {
+//         std::cerr << "Error loading background image" << std::endl;
+//         return;
+//     }
 
-    float scale = 20.0f / 1024.0f;
-    death_sprite.setTexture(death_texture);
-    death_sprite.setScale(scale, scale);
-}
+//     float scale = 20.0f / 216.0f;
+//     wall_sprite.setTexture(wall_texture);
+//     wall_sprite.setScale(scale, scale);
+// }
 
-void nibbler_display::create_apple()
-{
-    if (!apple_texture.loadFromFile("apple.png")) {
-        std::cerr << "Error loading background image" << std::endl;
-        return;
-    }
+// void nibbler_display::create_death()
+// {
+//     if (!death_texture.loadFromFile("xx.png")) {
+//         std::cerr << "Error loading background image" << std::endl;
+//         return;
+//     }
 
-    float scale = 20.0f / 1024.0f;
-    apple_sprite.setTexture(apple_texture);
-    apple_sprite.setScale(scale, scale);
-}
+//     float scale = 20.0f / 1024.0f;
+//     death_sprite.setTexture(death_texture);
+//     death_sprite.setScale(scale, scale);
+// }
 
-nibbler_display::nibbler_display(nibbler_l &l): logic(l), window(sf::VideoMode(963, 600), "nibbler Game")
-{
-    create_head();
-    create_blob();
-    create_wall();
-    create_death();
-    create_apple();
-}
+// void nibbler_display::create_apple()
+// {
+//     if (!apple_texture.loadFromFile("apple.png")) {
+//         std::cerr << "Error loading background image" << std::endl;
+//         return;
+//     }
 
-void nibbler_display::key_input()
-{
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
-        logic.direction('U');
-    }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
-        logic.direction('D');
-    }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
-        logic.direction('L');
-    }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
-        logic.direction('R');
-    }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q)) {
-        window.close();
-    }
-}
+//     float scale = 20.0f / 1024.0f;
+//     apple_sprite.setTexture(apple_texture);
+//     apple_sprite.setScale(scale, scale);
+// }
 
-void nibbler_display::move_nibbler(sf::Clock *clock)
-{
-    if ((*clock).getElapsedTime().asMilliseconds() >= 150) {  
-        if (!logic.move()) {  
-            std::cout << "Game Over!" << std::endl;  
-            window.close();  
-        }  
-        (*clock).restart();
-    }
-}
+// nibbler_display::nibbler_display(nibbler_l &l): logic(l), window(sf::VideoMode(963, 600), "nibbler Game")
+// {
+//     create_head();
+//     create_blob();
+//     create_wall();
+//     create_death();
+//     create_apple();
+// }
 
-void nibbler_display::draw()
-{
-    window.setFramerateLimit(10);  
-    const auto& map = logic.getMap();  
-    int cellSize = 20; 
-    sf::Clock clock;
-    sf::RectangleShape cell(sf::Vector2f(cellSize, cellSize));
+// void nibbler_display::key_input()
+// {
+//     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
+//         logic.direction('U');
+//     }
+//     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
+//         logic.direction('D');
+//     }
+//     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
+//         logic.direction('L');
+//     }
+//     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
+//         logic.direction('R');
+//     }
+//     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q)) {
+//         window.close();
+//     }
+// }
 
-    while (window.isOpen()) {  
-        sf::Event event;  
-        while (window.pollEvent(event)) {  
-            if (event.type == sf::Event::Closed) {  
-                window.close();  
-            }
-        }
-        key_input();
-        move_nibbler(&clock);
+// void nibbler_display::move_nibbler(sf::Clock *clock)
+// {
+//     if ((*clock).getElapsedTime().asMilliseconds() >= 150) {  
+//         if (!logic.move()) {  
+//             std::cout << "Game Over!" << std::endl;  
+//             window.close();  
+//         }  
+//         (*clock).restart();
+//     }
+// }
+
+// void nibbler_display::draw()
+// {
+//     window.setFramerateLimit(10);  
+//     const auto& map = logic.getMap();  
+//     int cellSize = 20; 
+//     sf::Clock clock;
+//     sf::RectangleShape cell(sf::Vector2f(cellSize, cellSize));
+
+//     while (window.isOpen()) {  
+//         sf::Event event;  
+//         while (window.pollEvent(event)) {  
+//             if (event.type == sf::Event::Closed) {  
+//                 window.close();  
+//             }
+//         }
+//         key_input();
+//         move_nibbler(&clock);
          
-        window.clear();  
-        for (size_t y = 0; y < map.size(); ++y) {  
-            for (size_t x = 0; x < map[y].size(); ++x) {  
+//         window.clear();  
+//         for (size_t y = 0; y < map.size(); ++y) {  
+//             for (size_t x = 0; x < map[y].size(); ++x) {  
 
-                if (map[y][x] == 'O') {
-                    head_sprite.setPosition(x * cellSize, y * cellSize);
-                    window.draw(head_sprite); 
-                } else if (map[y][x] == 'X') {  
-                    apple_sprite.setPosition(x * cellSize, y * cellSize);
-                    window.draw(apple_sprite);
-                } else if (map[y][x] == '#'){  
-                    wall_sprite.setPosition(x * cellSize, y * cellSize);
-                    window.draw(wall_sprite);
-                }else if (map[y][x] == 'B') {
-                    blob_sprite.setPosition(x * cellSize, y * cellSize);
-                    window.draw(blob_sprite);
-                } else {
-                    cell.setPosition(x * cellSize, y * cellSize);
-                    cell.setFillColor(sf::Color::Black);
-                    window.draw(cell);
-                }
-            }  
-        }  
-        window.display();
-    }  
-}
+//                 if (map[y][x] == 'O') {
+//                     head_sprite.setPosition(x * cellSize, y * cellSize);
+//                     window.draw(head_sprite); 
+//                 } else if (map[y][x] == 'X') {  
+//                     apple_sprite.setPosition(x * cellSize, y * cellSize);
+//                     window.draw(apple_sprite);
+//                 } else if (map[y][x] == '#'){  
+//                     wall_sprite.setPosition(x * cellSize, y * cellSize);
+//                     window.draw(wall_sprite);
+//                 }else if (map[y][x] == 'B') {
+//                     blob_sprite.setPosition(x * cellSize, y * cellSize);
+//                     window.draw(blob_sprite);
+//                 } else {
+//                     cell.setPosition(x * cellSize, y * cellSize);
+//                     cell.setFillColor(sf::Color::Black);
+//                     window.draw(cell);
+//                 }
+//             }  
+//         }  
+//         window.display();
+//     }  
+// }
 
-nibbler_display::~nibbler_display()
-{
+// nibbler_display::~nibbler_display()
+// {
 
-}
+// }
 
-int main() {  
-    const int width = 49;
-    const int height = 31;  
+// int main() {  
+//     const int width = 49;
+//     const int height = 31;  
 
-    std::string mapcontent = readFile("example.txt");
-    nibbler_l logic(width, height, mapcontent);
-    nibbler_display display(logic);
-    display.draw();
+//     std::string mapcontent = readFile("example.txt");
+//     nibbler_l logic(width, height, mapcontent);
+//     nibbler_display display(logic);
+//     display.draw();
 
-    return 0;  
-}
+//     return 0;  
+// }

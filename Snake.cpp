@@ -78,7 +78,6 @@ void Snake::update()
 
     snake.insert(snake.begin(), {new_x, new_y});  
     if (new_x == x_food && new_y == y_food) {
-
         eatfood();  
     } else {  
         auto tail = snake.back();  
@@ -97,9 +96,4 @@ const std::vector<std::string>& Snake::getMap() const
 bool Snake::isGameOver() const
 {
     return is_ended;
-}
-
-Snake::~Snake()
-{
-
 }
