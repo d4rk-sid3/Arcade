@@ -28,21 +28,23 @@
 
 class GameElement {
     private:
-        std::string _value; 
-        int _posx; 
-        int _posy; 
+        std::string _value;
+        int _posx;
+        int _posy;
         char _symbol;
 
     public:
-        GameElement() {}; 
-        ~GameElement() {}; 
-        void setValue(std::string value) {_value = value;}; 
-        void setPosX(int posx) {_posx = posx;}; 
-        void setPosY(int posy) {_posy = posy;}; 
-        void setSymbol(char sym) {_symbol = sym;}; 
-        std::string getValue() const {return _value;}; 
-        int getPosX() const {return _posx;}; 
-        int getPosY() const {return _posy;}; 
-        char getSymbol() const {return _symbol;}; 
+        GameElement() {};
+        ~GameElement() {};
+        void setValue(std::string value) {_value = value;};
+        void setPosX(int posx) {_posx = posx;};
+        void setPosY(int posy) {_posy = posy;};
+        void setSymbol(char sym) {_symbol = sym;};
+        void setSprite(std::string sprite);
+        std::string getSprite() const;
+        std::string getValue() const {return _value;};
+        int getPosX() const {return _posx;};
+        int getPosY() const {return _posy;};
+        char getSymbol() const {return _symbol;};
 };
 
