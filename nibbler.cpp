@@ -52,6 +52,15 @@ void Nibbler::init()
             elem.setPosX(b);
             elem.setPosY(a);
             elem.setSymbol(map[a][b]);
+            if (map[a][b] == '#') {
+                elem.setSprite("Games/Nibbler/wall.png");
+            } else if (map[a][b] == 'O') {
+                elem.setSprite("Games/Nibbler/head.png");
+            } else if (map[a][b] == 'X') {
+                elem.setSprite("Games/Nibbler/apple.png");
+            } else if (map[a][b] == 'B') {
+                elem.setSprite("Games/Nibbler/blob.png");
+            }
             element.push_back(elem);
         }
     }

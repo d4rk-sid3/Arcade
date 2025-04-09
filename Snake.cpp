@@ -51,6 +51,15 @@ void Snake::init()
             elem.setPosX(b);
             elem.setPosY(a);
             elem.setSymbol(map[a][b]);
+            if (map[a][b] == '#') {
+                elem.setSprite("Games/Nibbler/wall.png");
+            } else if (map[a][b] == 'O') {
+                elem.setSprite("Games/Nibbler/head.png");
+            } else if (map[a][b] == 'X') {
+                elem.setSprite("Games/Nibbler/apple.png");
+            } else if (map[a][b] == 'B') {
+                elem.setSprite("Games/Nibbler/blob.png");
+            }
             element.push_back(elem);
         }
     }
@@ -115,6 +124,10 @@ void Snake::update()
         }  
     }
 
+    if (!snake.empty()) {
+        map[head.second][head.first] = 'B';
+        element[(head.second * len) + head.first].setSymbol('B');
+    }
     snake.insert(snake.begin(), {new_x, new_y});  
     if (new_x == x_food && new_y == y_food) {
         eatfood();  
