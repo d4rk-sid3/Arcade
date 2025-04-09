@@ -65,7 +65,6 @@ class IGameModule {
          */
         virtual void handleInput(TrackPack keyCode) = 0;
 
-
         /**
          * @brief Renvoie l'état du jeu
          * 

@@ -1,0 +1,90 @@
+\doxysection{IModule\+Display Class Reference}
+\hypertarget{classIModuleDisplay}{}\label{classIModuleDisplay}\index{IModuleDisplay@{IModuleDisplay}}
+
+
+Une interface représentant un module d\textquotesingle{}affichage.  
+
+
+
+
+{\ttfamily \#include $<$IModule\+Display.\+hpp$>$}
+
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+virtual \mbox{\hyperlink{classIModuleDisplay_aa30c7b064230433ce462d5a4f898057e}{\texorpdfstring{$\sim$}{\string~}\+IModule\+Display}} ()=default
+\begin{DoxyCompactList}\small\item\em Destructeur par défaut. \end{DoxyCompactList}\item 
+virtual void \mbox{\hyperlink{classIModuleDisplay_ac84f61ee1e19ed1a799fb2b487d9af95}{init}} ()=0
+\begin{DoxyCompactList}\small\item\em Initialisation. \end{DoxyCompactList}\item 
+virtual void \mbox{\hyperlink{classIModuleDisplay_a9f600eaaee3838cac0685aa069cfbfe8}{render}} ()=0
+\begin{DoxyCompactList}\small\item\em Affichage. \end{DoxyCompactList}\item 
+virtual void \mbox{\hyperlink{classIModuleDisplay_a0421cebbb0d88a97084d48cf43dd2993}{handle\+Input}} ()=0
+\begin{DoxyCompactList}\small\item\em Gestion des entrées utilisateur. \end{DoxyCompactList}\item 
+virtual void \mbox{\hyperlink{classIModuleDisplay_a1fd7d82460253ea369d037b37c322580}{shutdown}} ()=0
+\begin{DoxyCompactList}\small\item\em Nettoyage à la fermeture. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Une interface représentant un module d\textquotesingle{}affichage. 
+
+Cette classe représente l\textquotesingle{}ensemble des modules graphiques et fournit les méthodes communes à elles toutes pour pouvoir les utiliser 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{classIModuleDisplay_aa30c7b064230433ce462d5a4f898057e}\label{classIModuleDisplay_aa30c7b064230433ce462d5a4f898057e} 
+\index{IModuleDisplay@{IModuleDisplay}!````~IModuleDisplay@{\texorpdfstring{$\sim$}{\string~}IModuleDisplay}}
+\index{````~IModuleDisplay@{\texorpdfstring{$\sim$}{\string~}IModuleDisplay}!IModuleDisplay@{IModuleDisplay}}
+\doxysubsubsection{\texorpdfstring{\texorpdfstring{$\sim$}{\string~}IModuleDisplay()}{\string~IModuleDisplay()}}
+{\footnotesize\ttfamily virtual IModule\+Display\+::\texorpdfstring{$\sim$}{\string~}\+IModule\+Display (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}, {\ttfamily [default]}}
+
+
+
+Destructeur par défaut. 
+
+Destructeur virtuel pour éviter les fuites mémoire 
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classIModuleDisplay_a0421cebbb0d88a97084d48cf43dd2993}\label{classIModuleDisplay_a0421cebbb0d88a97084d48cf43dd2993} 
+\index{IModuleDisplay@{IModuleDisplay}!handleInput@{handleInput}}
+\index{handleInput@{handleInput}!IModuleDisplay@{IModuleDisplay}}
+\doxysubsubsection{\texorpdfstring{handleInput()}{handleInput()}}
+{\footnotesize\ttfamily virtual void IModule\+Display\+::handle\+Input (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+
+
+Gestion des entrées utilisateur. 
+
+Gère les entrées du clavier et de la souris \Hypertarget{classIModuleDisplay_ac84f61ee1e19ed1a799fb2b487d9af95}\label{classIModuleDisplay_ac84f61ee1e19ed1a799fb2b487d9af95} 
+\index{IModuleDisplay@{IModuleDisplay}!init@{init}}
+\index{init@{init}!IModuleDisplay@{IModuleDisplay}}
+\doxysubsubsection{\texorpdfstring{init()}{init()}}
+{\footnotesize\ttfamily virtual void IModule\+Display\+::init (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+
+
+Initialisation. 
+
+Initialise les données de base du modules \Hypertarget{classIModuleDisplay_a9f600eaaee3838cac0685aa069cfbfe8}\label{classIModuleDisplay_a9f600eaaee3838cac0685aa069cfbfe8} 
+\index{IModuleDisplay@{IModuleDisplay}!render@{render}}
+\index{render@{render}!IModuleDisplay@{IModuleDisplay}}
+\doxysubsubsection{\texorpdfstring{render()}{render()}}
+{\footnotesize\ttfamily virtual void IModule\+Display\+::render (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+
+
+Affichage. 
+
+Gère l\textquotesingle{}affichage des assets \Hypertarget{classIModuleDisplay_a1fd7d82460253ea369d037b37c322580}\label{classIModuleDisplay_a1fd7d82460253ea369d037b37c322580} 
+\index{IModuleDisplay@{IModuleDisplay}!shutdown@{shutdown}}
+\index{shutdown@{shutdown}!IModuleDisplay@{IModuleDisplay}}
+\doxysubsubsection{\texorpdfstring{shutdown()}{shutdown()}}
+{\footnotesize\ttfamily virtual void IModule\+Display\+::shutdown (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+
+
+Nettoyage à la fermeture. 
+
+Détruit les assets et libère la mémoire 
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{IModuleDisplay_8hpp}{IModule\+Display.\+hpp}}\end{DoxyCompactItemize}

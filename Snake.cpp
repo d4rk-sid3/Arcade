@@ -7,26 +7,63 @@
 
 #include "Snake.hpp"
 
+std::string readFile(const std::string& filename)
+{  
+    std::ifstream file(filename);  
+    if (!file) {  
+        std::cerr << "Error opening file: " << filename << std::endl;  
+        return "";  
+    }  
+    std::string content;  
+    std::string line;
+
+    while (std::getline(file, line)) {  
+        content += line + "\n";
+    }  
+    return content;  
+}  
+
+std::vector<std::string> readtable(const std::string& m)
+{
+    std::vector<std::string> newmap;
+    std::istringstream stream(m);
+    std::string line;
+    
+    while (std::getline(stream, line)) {
+        newmap.push_back(line);
+    }
+    return newmap;
+}
+
 Snake::~Snake()
 {
 }
 
-Snake::Snake(int w, int h): direction(DOWN), x(w / 2), y(h / 2), x_food(0),
-    y_food(0), width(w), height(h), is_ended(false), score(0)
+Snake::Snake()
 {
-    init();
 }
 
 void Snake::init()
 {
-    map.resize(height, std::string(width, ' ')); 
-    snake.push_back({x, y});  
+    for (int a = 0; a < map.size(); a++) {
+        for (int b = 0; b < map[0].size(); b++) {
+            GameElement elem;
+            elem.setPosX(b);
+            elem.setPosY(a);
+            elem.setSymbol(map[a][b]);
+            element.push_back(elem);
+        }
+    }
+    int len = map.size();
+    snake.push_back({x, y});
+    element[(y * len) + x].setSymbol('O');
     map[y][x] = 'O';  
     eatfood();
 }
 
 void Snake::eatfood()
-{  
+{
+    int len = map.size();
     std::srand(std::time(nullptr));
 
     x_food = x;
@@ -34,8 +71,9 @@ void Snake::eatfood()
     while (map[y_food][x_food] != ' ') {
         x_food = std::rand() % map[0].size();  
         y_food = std::rand() % map.size();  
-    } 
-    map[y_food][x_food] = 'X'; 
+    }
+    element[(y_food * len) + x_food].setSymbol('X');
+    map[y_food][x_food] = 'X';
 }
 
 void Snake::handleInput(TrackPack keyCode)
@@ -49,7 +87,8 @@ void Snake::handleInput(TrackPack keyCode)
 }
 
 void Snake::update()
-{  
+{
+    int len = map.size();
     auto head = snake.front();  
     int new_x = head.first;  
     int new_y = head.second;  
@@ -69,7 +108,7 @@ void Snake::update()
         return;
     }
 
-    for (size_t i = 1; i < snake.size(); ++i) {  
+    for (size_t i = 1; i < snake.size(); i++) {  
         if (snake[i] == std::make_pair(new_x, new_y)) {  
             is_ended = true;
             return;
@@ -78,13 +117,14 @@ void Snake::update()
 
     snake.insert(snake.begin(), {new_x, new_y});  
     if (new_x == x_food && new_y == y_food) {
-
         eatfood();  
     } else {  
-        auto tail = snake.back();  
+        auto tail = snake.back();
+        element[(tail.second * len) + tail.first].setSymbol(' ');
         map[tail.second][tail.first] = ' '; 
         snake.pop_back();  
-    }  
+    }
+    element[(new_y * len) + new_x].setSymbol('O');
     map[new_y][new_x] = 'O';
     return;  
 }
@@ -99,7 +139,23 @@ bool Snake::isGameOver() const
     return is_ended;
 }
 
-Snake::~Snake()
+std::vector <GameElement> Snake::getGameState() const
 {
+    return element;
+}
 
+void Snake::setall(int w, int h, const std::string& filename)
+{
+    width = w;
+    height = h;
+    m = filename;
+    direction = DOWN;
+    x = (width / 2);
+    y = (height / 2);
+    x_food = 0;
+    y_food = 0;
+    map = readtable(m);
+    score = 0;
+    time = 20;
+    is_ended = false;
 }
