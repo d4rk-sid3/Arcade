@@ -19,37 +19,6 @@
     #include "IModuleGame.hpp"
     #include "IModuleDisplay.hpp"
 
-    // class nibbler_display {   
-    //     private:
-    //         nibbler_l &logic;
-    //         sf::RenderWindow window;
-    //         sf::Event event;
-    //         sf::Texture head_texture;
-    //         sf::Texture blob_texture;
-    //         sf::Texture wall_texture;
-    //         sf::Texture death_texture;
-    //         sf::Texture apple_texture;
-    //         sf::Sprite head_sprite;
-    //         sf::Sprite blob_sprite;
-    //         sf::Sprite wall_sprite;
-    //         sf::Sprite death_sprite;
-    //         sf::Sprite apple_sprite;
-
-
-    //     public:
-    //         nibbler_display(nibbler_l &l);
-    //         void draw();
-    //         ~nibbler_display();
-    //         void key_input();
-    //         void move_nibbler(sf::Clock *clock);
-    //         void create_head();
-    //         void create_blob();
-    //         void create_wall();
-    //         void create_death();
-    //         void create_apple();
-
-    // };
-
     class Nibbler : public IGameModule {
         public:
             Nibbler();
@@ -60,8 +29,8 @@
             bool isGameOver() const;
             std::vector <GameElement> getGameState() const;
             void handleInput(TrackPack keyCode);
-            void setall(int w, int h, const std::string& m);
             std::vector <GameElement> createElement();
+            int getScore() const;
 
         private:
             std::vector<std::string> map;
@@ -78,6 +47,7 @@
             std::vector <GameElement> element;
             int time;
             std::string m;
+            const std::string filepath = "NibblerConfig.txt";
             
 
     };
