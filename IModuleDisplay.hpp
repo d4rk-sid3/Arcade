@@ -61,7 +61,7 @@ class IModuleDisplay {
          */
         virtual TrackPack getEvent() = 0;
 
-        virtual void update() = 0;
+        virtual void update(std::vector <GameElement> configs) = 0;
         virtual void stop() = 0;
     
         /**
