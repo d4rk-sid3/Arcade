@@ -13,11 +13,7 @@ Sfml::Sfml() : window(sf::VideoMode(800, 600), "Arcade", sf::Style::Titlebar | s
 
 void Sfml::handleInput()
 {
-    while (window.pollEvent(event)) {  
-        if (event.type == sf::Event::Closed) {  
-            window.close();  
-        }
-    }
+    stop();
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
         keyPressed =  UP;
     }
@@ -70,9 +66,36 @@ void Sfml::draw()
 
 void Sfml::update(std::vector <GameElement> configs)
 {
-
+    for (int a = 0; a < configs.size(); a++) {
+        if (!(configs[a] == actualState[a])) {
+            actualState[a] = configs[a];
+            int size = actualState[a].getSpriteSize();
+            int posX = actualState[a].getPosX();
+            int posY = actualState[a].getPosY();
+            sf::Texture texture;
+            if (!texture.loadFromFile(actualState[a].getSprite())) {
+                std::cerr << "Error loading background image" << std::endl;
+                std::exit(84);
+            }
+            sf::Sprite sprite;
+            sprite.setTexture(texture);
+            sprite.setPosition(sf::Vector2f(posX * size, posY * size));
+            images[a].first = sprite;
+            images[a].second = texture;
+        }
+    }
 }
 
 Sfml::~Sfml()
 {
+}
+
+void Sfml::stop()
+{
+    while (window.pollEvent(event)) {  
+        if (event.type == sf::Event::Closed) {
+            actualState.~vector();
+            window.close();  
+        }
+    }
 }

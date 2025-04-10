@@ -62,7 +62,6 @@ class IModuleDisplay {
         virtual TrackPack getEvent() = 0;
 
         virtual void update(std::vector <GameElement> configs) = 0;
-        virtual void stop() = 0;
     
         /**
          * @brief Affichage
@@ -76,7 +75,7 @@ class IModuleDisplay {
          * 
          * Détruit les assets et libère la mémoire
          */
-        virtual void shutdown() = 0;
+        virtual void stop() = 0;
 };
 
 #endif /* !IMODULEDISPLAY_HPP_ */

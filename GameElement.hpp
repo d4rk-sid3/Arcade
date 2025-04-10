@@ -50,5 +50,8 @@ class GameElement {
         char getSymbol() const {return _symbol;};
         int getSpriteSize() const {return _size;};
         std::string getSprite() const {return _sprite;};
+        bool operator== (GameElement &tmp) {
+            return ((this->getValue() == tmp.getValue()) && (this->getPosX() == tmp.getPosX()) && (this->getPosY() == tmp.getPosY()) && (this->getSymbol() == tmp.getSymbol()));
+        };
 };
 
