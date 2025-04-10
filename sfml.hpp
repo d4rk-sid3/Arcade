@@ -9,19 +9,20 @@
 #define SFML_HPP_
     #include <SFML/Graphics.hpp>
     #include <iostream>
+    #include "IModuleDisplay.hpp"
 
-    class sfml {
-        private:
-            sf::RenderWindow window;
-            sf::Event event;
-            sf::RectangleShape rect;
-
+    class Sfml : public IModuleDisplay {
         public:
-            sfml();
-            void create_rect(sf::RectangleShape *rect);
-            void keyinput();
-            ~sfml();
-
+            Sfml();
+            ~Sfml();
+            void init(std::vector <GameElement> configs) override;
+            void handleInput() override;
+            TrackPack getEvent() override;
+            void draw() override;
+            void update() override;
+            void stop() override;
+        private:
+            TrackPack keyPressed;
     };
 
 #endif /* !SFML_HPP_ */

@@ -82,13 +82,4 @@
 
     };
 
-    class NibblerDisplay : public IModuleDisplay {
-        public:
-            NibblerDisplay();
-            ~NibblerDisplay();
-
-        private:
-
-    };
-
 #endif /* !nibbler_HPP_ */
