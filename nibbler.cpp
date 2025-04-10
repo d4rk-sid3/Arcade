@@ -46,28 +46,9 @@ Nibbler::Nibbler()
 
 void Nibbler::init()
 {
-    for (int a = 0; a < map.size(); a++) {
-        for (int b = 0; b < map[0].size(); b++) {
-            GameElement elem;
-            elem.setPosX(b);
-            elem.setPosY(a);
-            elem.setSymbol(map[a][b]);
-            if (map[a][b] == '#') {
-                elem.setSprite("Games/Nibbler/wall.png");
-            } else if (map[a][b] == 'O') {
-                elem.setSprite("Games/Nibbler/head.png");
-            } else if (map[a][b] == 'X') {
-                elem.setSprite("Games/Nibbler/apple.png");
-            } else if (map[a][b] == 'B') {
-                elem.setSprite("Games/Nibbler/blob.png");
-            }
-            element.push_back(elem);
-        }
-    }
     for (int i = 0; i < 4; i++) {
         int len = map.size();
         nibbler.push_back({x, y - i});
-        element[(y * len) + x].setSymbol('O');
         map[y][x] = 'O';
     }
     eatfood();
@@ -84,7 +65,6 @@ void Nibbler::eatfood()
     int a = 0;
     while (a < nb_fruit) {
         if (map[y_food][x_food] == ' ') {
-            element[(y_food * len_y) + x_food].setSymbol('X');
             map[y_food][x_food] = 'X';
             foods.push_back({x_food, y_food});
             a++;
@@ -138,7 +118,6 @@ void Nibbler::update()
     }
 
     nibbler.insert(nibbler.begin(), {new_x, new_y});
-    element[(new_y * len) + new_x].setSymbol('O');
     map[new_y][new_x] = 'O';
     
 
@@ -152,21 +131,41 @@ void Nibbler::update()
         }
     }
     auto tail = nibbler.back();
-    element[(tail.second * len) + tail.first].setSymbol(' ');
     map[tail.second][tail.first] = ' ';
     nibbler.pop_back();
 
+    createElement();
     return;  
-}  
-
-const std::vector<std::string>& Nibbler::getMap() const
-{  
-    return map;
 }
 
 bool Nibbler::isGameOver() const
 {
     return is_ended;
+}
+
+std::vector <GameElement> Nibbler::createElement()
+{
+    element.clear();
+    for (int a = 0; a < map.size(); a++) {
+        for (int b = 0; b < map[0].size(); b++) {
+            if (map[a][b] != ' ') {
+                GameElement elem;
+                elem.setPosX(b);
+                elem.setPosY(a);
+                elem.setSymbol(map[a][b]);
+                if (map[a][b] == '#') {
+                    elem.setSprite("Games/Nibbler/wall.png");
+                } else if (map[a][b] == 'O') {
+                    elem.setSprite("Games/Nibbler/head.png");
+                } else if (map[a][b] == 'X') {
+                    elem.setSprite("Games/Nibbler/apple.png");
+                } else if (map[a][b] == 'B') {
+                    elem.setSprite("Games/Nibbler/blob.png");
+                }
+                element.emplace_back(elem);
+            }
+        }
+    }
 }
 
 std::vector <GameElement> Nibbler::getGameState() const

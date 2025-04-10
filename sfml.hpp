@@ -19,10 +19,16 @@
             void handleInput() override;
             TrackPack getEvent() override;
             void draw() override;
-            void update() override;
+            void update(std::vector <GameElement> configs) override;
             void stop() override;
+
         private:
             TrackPack keyPressed;
+            sf::RenderWindow window;
+            sf::Event event;
+            std::vector<std::pair<sf::Sprite, sf::Texture>> images;
+            std::vector <GameElement> actualState;
+
     };
 
 #endif /* !SFML_HPP_ */

@@ -58,10 +58,10 @@
             void update() override;
             void eatfood();
             bool isGameOver() const;
-            const std::vector<std::string>& getMap() const;
             std::vector <GameElement> getGameState() const;
             void handleInput(TrackPack keyCode);
             void setall(int w, int h, const std::string& m);
+            std::vector <GameElement> createElement();
 
         private:
             std::vector<std::string> map;
