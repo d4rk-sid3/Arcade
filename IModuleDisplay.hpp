@@ -29,6 +29,7 @@
 #ifndef IMODULEDISPLAY_HPP_
 #define IMODULEDISPLAY_HPP_
 #include "TrackPack.hpp"
+#include <GameElement.hpp>
 
 class IModuleDisplay {
     public:
@@ -44,7 +45,7 @@ class IModuleDisplay {
          * 
          * Initialise les données de base du modules
          */
-        virtual void init() = 0;
+        virtual void init(std::vector <GameElement> configs) = 0;
 
         /**
          * @brief Gestion des entrées utilisateur
@@ -58,7 +59,10 @@ class IModuleDisplay {
          * 
          * @return l'enumèration TRackpack contenant l'entrée du l'utilisateur
          */
-        virtual TrackPack getInput() = 0;
+        virtual TrackPack getEvent() = 0;
+
+        virtual void update() = 0;
+        virtual void stop() = 0;
     
         /**
          * @brief Affichage
