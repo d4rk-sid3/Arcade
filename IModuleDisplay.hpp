@@ -29,7 +29,7 @@
 #ifndef IMODULEDISPLAY_HPP_
 #define IMODULEDISPLAY_HPP_
 #include "TrackPack.hpp"
-#include <GameElement.hpp>
+#include "GameElement.hpp"
 
 class IModuleDisplay {
     public:

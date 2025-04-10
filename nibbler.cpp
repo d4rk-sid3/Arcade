@@ -20,7 +20,8 @@ void Nibbler::init()
 {
     std::ifstream file(filepath);  
     if (!file) {  
-        std::cerr << "Error opening file: " << filepath << std::endl;  
+        std::cerr << "Error opening file: " << filepath << std::endl;
+        std::exit(84);
         return;  
     }  
     std::string line;
@@ -152,7 +153,6 @@ void Nibbler::update()
     }
     if (!nibbler.empty()) {
         map[head.second][head.first] = 'B';
-        element[(head.second * len) + head.first].setSymbol('B');
     }
 
     nibbler.insert(nibbler.begin(), {new_x, new_y});
@@ -181,7 +181,7 @@ bool Nibbler::isGameOver() const
     return is_ended;
 }
 
-std::vector <GameElement> Nibbler::createElement()
+void Nibbler::createElement()
 {
     element.clear();
     for (int a = 0; a < map.size(); a++) {

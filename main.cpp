@@ -16,12 +16,17 @@ int main(int ac, char **av)
     try {
         g_test.init();
         test.init(g_test.getGameState());
+        TrackPack keycode;
 
         while (!g_test.isGameOver()) {
-            
+            test.draw();
+            test.handleInput();
+            keycode = test.getEvent();
+            g_test.handleInput(keycode);
+            g_test.update();
+            test.update(g_test.getGameState());
         }
-
-    } catch () {
-
+    } catch (...) {
+        std::cerr << "eeeeeeeeeeeeeeeeeeeeeeeeeeee" << std::endl;
     }
 }

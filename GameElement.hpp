@@ -36,22 +36,20 @@ class GameElement {
         std::string _sprite;
 
     public:
-        GameElement() {};
-        ~GameElement() {};
-        void setValue(std::string value) {_value = value;};
-        void setPosX(int posx) {_posx = posx;};
-        void setPosY(int posy) {_posy = posy;};
-        void setSymbol(char sym) {_symbol = sym;};
-        void setSpriteSize(int size) {_size = size;};
-        void setSprite(std::string sprite) {_sprite = sprite;};
-        std::string getValue() const {return _value;};
-        int getPosX() const {return _posx;};
-        int getPosY() const {return _posy;};
-        char getSymbol() const {return _symbol;};
-        int getSpriteSize() const {return _size;};
-        std::string getSprite() const {return _sprite;};
-        bool operator== (GameElement &tmp) {
-            return ((this->getValue() == tmp.getValue()) && (this->getPosX() == tmp.getPosX()) && (this->getPosY() == tmp.getPosY()) && (this->getSymbol() == tmp.getSymbol()));
-        };
+        GameElement();
+        ~GameElement();
+        void setValue(std::string value);
+        void setPosX(int posx);
+        void setPosY(int posy);
+        void setSymbol(char sym);
+        void setSpriteSize(int size);
+        void setSprite(std::string sprite);
+        std::string getValue() const;
+        int getPosX() const;
+        int getPosY() const;
+        char getSymbol() const;
+        int getSpriteSize() const;
+        std::string getSprite() const;
+        bool operator== (GameElement &tmp);
 };
 
