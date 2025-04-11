@@ -25,8 +25,8 @@ class Sfml : public IModuleDisplay {
         TrackPack keyPressed;
         sf::RenderWindow window;
         sf::Event event;
-        std::vector<std::pair<sf::Sprite, sf::Texture>> images;
-        std::vector <GameElement> actualState;
+        std::vector<std::pair<sf::Sprite *, sf::Texture *>> images;
+        std::vector <GameElement> oldState;
 };
 
 #endif /* !SFML_HPP_ */

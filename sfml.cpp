@@ -7,7 +7,7 @@
 
 #include "sfml.hpp"
 
-Sfml::Sfml() : window(sf::VideoMode(800, 600), "Arcade", sf::Style::Titlebar | sf::Style::Resize | sf::Style::Close)
+Sfml::Sfml() : window(sf::VideoMode(1920, 1080), "Arcade", sf::Style::Titlebar | sf::Style::Resize | sf::Style::Close)
 {
 }
 
@@ -38,19 +38,21 @@ TrackPack Sfml::getEvent()
 
 void Sfml::init(std::vector <GameElement> configs)
 {
-    actualState = configs;
+    for (int a = 0; a < configs.size(); a++) {
+        oldState.push_back(configs[a]);
+    }
     for (int i = 0; i < configs.size(); i++) {
+        sf::Texture *texture = new sf::Texture;
+        sf::Sprite *sprite = new sf::Sprite;
         int size = configs[i].getSpriteSize();
         int posX = configs[i].getPosX();
         int posY = configs[i].getPosY();
-        sf::Texture texture;
-        if (!texture.loadFromFile(configs[i].getSprite())) {
+        if (!texture->loadFromFile(configs[i].getSprite())) {
             std::cerr << "Error loading background image" << std::endl;
             std::exit(84);
         }
-        sf::Sprite sprite;
-        sprite.setTexture(texture);
-        sprite.setPosition(sf::Vector2f(posX * size, posY * size));
+        sprite->setTexture(*texture);
+        sprite->setPosition(sf::Vector2f(posX * size, posY * size));
         images.push_back(std::make_pair(sprite, texture));
     }
 }
@@ -58,31 +60,28 @@ void Sfml::init(std::vector <GameElement> configs)
 void Sfml::draw()
 {
     handleInput();
-    window.clear();  
+    window.clear();
     for (int i = 0; i < images.size(); i++)
-        window.draw(images[i].first);  
+        window.draw(*images[i].first);  
     window.display();
 }
 
-void Sfml::update(std::vector <GameElement> configs)
+void Sfml::update(std::vector<GameElement> configs)
 {
     for (int a = 0; a < configs.size(); a++) {
-        if (!(configs[a] == actualState[a])) {
-            actualState[a] = configs[a];
-            int size = actualState[a].getSpriteSize();
-            int posX = actualState[a].getPosX();
-            int posY = actualState[a].getPosY();
-            sf::Texture texture;
-            if (!texture.loadFromFile(actualState[a].getSprite())) {
-                std::cerr << "Error loading background image" << std::endl;
-                std::exit(84);
-            }
-            sf::Sprite sprite;
-            sprite.setTexture(texture);
-            sprite.setPosition(sf::Vector2f(posX * size, posY * size));
-            images[a].first = sprite;
-            images[a].second = texture;
-        }
+        // if (!(configs[a] == actualState[a])) {
+            oldState[a] = configs[a];
+            std::cout << "old: " << configs[a].getPosX() << std::endl;
+            std::cout << "old: " << configs[a].getPosY() << std::endl;
+            std::cout << "new: " << oldState[a].getPosX() << std::endl;
+            std::cout << "new: " << oldState[a].getPosY() << std::endl;
+            std::cout << "test" << std::endl;
+            int size = oldState[a].getSpriteSize();
+            int posX = oldState[a].getPosX();
+            int posY = oldState[a].getPosY();
+
+            images[a].first->setPosition(sf::Vector2f(posX * size, posY * size));
+        // }
     }
 }
 
@@ -94,7 +93,7 @@ void Sfml::stop()
 {
     while (window.pollEvent(event)) {  
         if (event.type == sf::Event::Closed) {
-            actualState.~vector();
+            oldState.~vector();
             window.close();  
         }
     }

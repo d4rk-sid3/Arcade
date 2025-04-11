@@ -6,23 +6,15 @@
 */
 
 /**
- * @file GameElement.hpp
- * @brief Définition de la classe IDisplayGame
- * 
- * Ce fichier contient la définition de la classe IDisplayGame, 
- * qui est une interface permettent de gérer les modules de jeu
- * 
- * @author Oscar Gbenou
- * @date 25 Mars 2025
- */
-
-/**
  * @class GameElement
  * @brief Une interface représentant un module de jeu
  * 
  * Cette classe représente l'ensemble des modules de jeu et fournit 
  * les méthodes communes à elles toutes pour pouvoir les utiliser
  */
+
+#ifndef GAMEELEMENT_HPP_
+#define GAMEELEMENT_HPP_
 
 #include <string>
 
@@ -51,5 +43,14 @@ class GameElement {
         int getSpriteSize() const;
         std::string getSprite() const;
         bool operator== (GameElement &tmp);
+        GameElement *operator= (GameElement &tmp) {
+            this->_posx = tmp.getPosX();
+            this->_posy = tmp.getPosY();
+            this->_symbol = tmp.getSymbol();
+            this->_size = tmp.getSpriteSize();
+            this->_sprite = tmp.getSprite();
+            return this;
+        }
 };
 
+#endif /* !GAMEELEMENT_HPP_ */
