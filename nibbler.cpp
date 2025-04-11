@@ -89,8 +89,6 @@ void Nibbler::init()
         nibbler.push_back({x, y - i});
         map[y][x] = 'O';
     }
-    // start = std::clock();
-    // duration = 0;
     createElement();
     eatfood();
 }
@@ -123,10 +121,6 @@ void Nibbler::handleInput(TrackPack keyCode)
         (direction == RIGHT && keyCode != LEFT)) {  
         direction = keyCode;  
     }
-    //     direction = keyCode;  
-
-    // if (direction == UP)
-    //     std::cout << "Haut" << std::endl;
 }
 
 void Nibbler::update()
@@ -136,27 +130,19 @@ void Nibbler::update()
     int new_x = head.first;  
     int new_y = head.second;
 
-    // duration = (std::clock() - start) / (double) CLOCKS_PER_SEC;
-
-    // std::cout << duration << std::endl;
-    // if (duration > 1) { 
-        if (direction == UP) {
-            new_y--;
-        } else if (direction == DOWN) {
-            new_y++;
-        } else if (direction == LEFT) {
-            new_x--;
-        } else if (direction == RIGHT) {
-            new_x++;
-        }
-        // start = std::clock();
-    // }
-
+    if (direction == UP) {
+        new_y--;
+    } else if (direction == DOWN) {
+        new_y++;
+    } else if (direction == LEFT) {
+        new_x--;
+    } else if (direction == RIGHT) {
+        new_x++;
+    }
     if (map[new_y][new_x] == '#') {
         is_ended = false;
         return;
     }
-
     for (size_t i = 1; i < nibbler.size(); i++) {  
         if (nibbler[i] == std::make_pair(new_x, new_y)) {
             is_ended = true;
