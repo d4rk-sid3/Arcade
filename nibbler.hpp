@@ -46,6 +46,8 @@ class Nibbler : public IGameModule {
         std::vector <GameElement> element;
         int time;
         std::string m;
+        std::clock_t start;
+        double duration;
         const std::string filepath = "NibblerConfig.txt";
         
 };

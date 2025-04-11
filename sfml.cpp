@@ -38,6 +38,7 @@ TrackPack Sfml::getEvent()
 
 void Sfml::init(std::vector <GameElement> configs)
 {
+    oldState.clear();
     for (int a = 0; a < configs.size(); a++) {
         oldState.push_back(configs[a]);
     }
@@ -59,6 +60,7 @@ void Sfml::init(std::vector <GameElement> configs)
 
 void Sfml::draw()
 {
+    window.setFramerateLimit(10);
     handleInput();
     window.clear();
     for (int i = 0; i < images.size(); i++)
@@ -69,19 +71,20 @@ void Sfml::draw()
 void Sfml::update(std::vector<GameElement> configs)
 {
     for (int a = 0; a < configs.size(); a++) {
-        // if (!(configs[a] == actualState[a])) {
+        if (!(configs[a] == oldState[a])) {
             oldState[a] = configs[a];
-            std::cout << "old: " << configs[a].getPosX() << std::endl;
-            std::cout << "old: " << configs[a].getPosY() << std::endl;
-            std::cout << "new: " << oldState[a].getPosX() << std::endl;
-            std::cout << "new: " << oldState[a].getPosY() << std::endl;
-            std::cout << "test" << std::endl;
+            oldState[a].setPosX(configs[a].getPosX());
+            oldState[a].setPosY(configs[a].getPosY());
+            oldState[a].setSymbol(configs[a].getSymbol());
+            oldState[a].setSpriteSize(configs[a].getSpriteSize());
+            oldState[a].setSprite(configs[a].getSprite());
             int size = oldState[a].getSpriteSize();
             int posX = oldState[a].getPosX();
             int posY = oldState[a].getPosY();
-
+            images[a].second->loadFromFile(oldState[a].getSprite());
+            images[a].first->setTexture(*(images[a].second));
             images[a].first->setPosition(sf::Vector2f(posX * size, posY * size));
-        // }
+        }
     }
 }
 

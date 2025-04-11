@@ -89,6 +89,8 @@ void Nibbler::init()
         nibbler.push_back({x, y - i});
         map[y][x] = 'O';
     }
+    // start = std::clock();
+    // duration = 0;
     createElement();
     eatfood();
 }
@@ -104,7 +106,6 @@ void Nibbler::eatfood()
     int a = 0;
     while (a < nb_fruit) {
         if (map[y_food][x_food] == ' ') {
-            element[(y_food * len_y) + x_food].setSymbol('X');
             map[y_food][x_food] = 'X';
             foods.push_back({x_food, y_food});
             a++;
@@ -116,16 +117,16 @@ void Nibbler::eatfood()
 
 void Nibbler::handleInput(TrackPack keyCode)
 {
-    // if ((direction == UP && keyCode != DOWN) ||   
-    //     (direction == DOWN && keyCode != UP) ||   
-    //     (direction == LEFT && keyCode != RIGHT) ||   
-    //     (direction == RIGHT && keyCode != LEFT)) {  
-    //     direction = keyCode;  
-    // }
+    if ((direction == UP && keyCode != DOWN) ||   
+        (direction == DOWN && keyCode != UP) ||   
+        (direction == LEFT && keyCode != RIGHT) ||   
+        (direction == RIGHT && keyCode != LEFT)) {  
         direction = keyCode;  
+    }
+    //     direction = keyCode;  
 
-    if (direction == UP)
-        std::cout << "Haut" << std::endl;
+    // if (direction == UP)
+    //     std::cout << "Haut" << std::endl;
 }
 
 void Nibbler::update()
@@ -133,53 +134,57 @@ void Nibbler::update()
     int len = map.size();
     auto head = nibbler.front();  
     int new_x = head.first;  
-    int new_y = head.second;  
+    int new_y = head.second;
 
-    if (direction == UP) {
-        new_y--;
-    } else if (direction == DOWN) {
-        new_y++;
-    } else if (direction == LEFT) {
-        new_x--;
-    } else if (direction == RIGHT) {
-        new_x++;
-    }
+    // duration = (std::clock() - start) / (double) CLOCKS_PER_SEC;
+
+    // std::cout << duration << std::endl;
+    // if (duration > 1) { 
+        if (direction == UP) {
+            new_y--;
+        } else if (direction == DOWN) {
+            new_y++;
+        } else if (direction == LEFT) {
+            new_x--;
+        } else if (direction == RIGHT) {
+            new_x++;
+        }
+        // start = std::clock();
+    // }
 
     if (map[new_y][new_x] == '#') {
-        is_ended = true;
+        is_ended = false;
         return;
     }
 
     for (size_t i = 1; i < nibbler.size(); i++) {  
         if (nibbler[i] == std::make_pair(new_x, new_y)) {
-            is_ended = false;
+            is_ended = true;
             return;
         }  
     }
     if (!nibbler.empty()) {
         map[head.second][head.first] = 'B';
-        element[(head.second * len) + head.first].setSymbol('B');
     }
 
     nibbler.insert(nibbler.begin(), {new_x, new_y});
-    element[(new_y * len) + new_x].setSymbol('O');
     map[new_y][new_x] = 'O';
-    
 
     for (int i = 0; i < foods.size(); i++) {
         if (foods[i] == std::make_pair(new_x, new_y)) {
             score += 10;
             std::cout << "Score: " << score << std::endl;
             time += 10;
-            is_ended = true;
+            foods.erase(foods.begin() + i);
+            is_ended = false;
             return;
         }
     }
     auto tail = nibbler.back();
-    element[(tail.second * len) + tail.first].setSymbol(' ');
     map[tail.second][tail.first] = ' ';
     nibbler.pop_back();
 
+    createElement();
     return;  
 }
 
