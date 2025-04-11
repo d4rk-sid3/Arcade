@@ -6,13 +6,12 @@
 */
 
 #include "nibbler.hpp"
-#include "sfml.hpp"
-#include "Ncures.hpp"
+#include "sdl.hpp"
 
 int main(int ac, char **av)
 {
     Nibbler g_test;
-    Ncurses test;
+    Sdl test;
 
     try {
         g_test.init();
