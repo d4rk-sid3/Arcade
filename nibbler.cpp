@@ -79,17 +79,17 @@ void Nibbler::init()
             }
         }
         if (key == "MAP") {
-            while (std::getline(file, map_line)) {  
+            while (std::getline(file, map_line)) {
                 map.push_back(map_line);
             }
         }
     }
-
     for (int i = 0; i < 4; i++) {
         int len = map.size();
         nibbler.push_back({x, y - i});
         map[y][x] = 'O';
     }
+    createElement();
     eatfood();
 }
 
@@ -104,6 +104,7 @@ void Nibbler::eatfood()
     int a = 0;
     while (a < nb_fruit) {
         if (map[y_food][x_food] == ' ') {
+            element[(y_food * len_y) + x_food].setSymbol('X');
             map[y_food][x_food] = 'X';
             foods.push_back({x_food, y_food});
             a++;
@@ -114,13 +115,17 @@ void Nibbler::eatfood()
 }
 
 void Nibbler::handleInput(TrackPack keyCode)
-{  
-    if ((direction == UP && keyCode != DOWN) ||   
-        (direction == DOWN && keyCode != UP) ||   
-        (direction == LEFT && keyCode != RIGHT) ||   
-        (direction == RIGHT && keyCode != LEFT)) {  
+{
+    // if ((direction == UP && keyCode != DOWN) ||   
+    //     (direction == DOWN && keyCode != UP) ||   
+    //     (direction == LEFT && keyCode != RIGHT) ||   
+    //     (direction == RIGHT && keyCode != LEFT)) {  
+    //     direction = keyCode;  
+    // }
         direction = keyCode;  
-    }  
+
+    if (direction == UP)
+        std::cout << "Haut" << std::endl;
 }
 
 void Nibbler::update()
@@ -153,9 +158,11 @@ void Nibbler::update()
     }
     if (!nibbler.empty()) {
         map[head.second][head.first] = 'B';
+        element[(head.second * len) + head.first].setSymbol('B');
     }
 
     nibbler.insert(nibbler.begin(), {new_x, new_y});
+    element[(new_y * len) + new_x].setSymbol('O');
     map[new_y][new_x] = 'O';
     
 
@@ -169,10 +176,10 @@ void Nibbler::update()
         }
     }
     auto tail = nibbler.back();
+    element[(tail.second * len) + tail.first].setSymbol(' ');
     map[tail.second][tail.first] = ' ';
     nibbler.pop_back();
 
-    createElement();
     return;  
 }
 
@@ -192,15 +199,15 @@ void Nibbler::createElement()
             elem.setSymbol(map[a][b]);
             elem.setSpriteSize(20);
             if (map[a][b] == '#') {
-                elem.setSprite("Games/Nibbler/wall.png");
+                elem.setSprite("./Games/Nibbler/wall.png");
             } else if (map[a][b] == 'O') {
-                elem.setSprite("Games/Nibbler/head.png");
+                elem.setSprite("./Games/Nibbler/head.png");
             } else if (map[a][b] == 'X') {
-                elem.setSprite("Games/Nibbler/apple.png");
+                elem.setSprite("./Games/Nibbler/apple.png");
             } else if (map[a][b] == 'B') {
-                elem.setSprite("Games/Nibbler/blob.png");
+                elem.setSprite("./Games/Nibbler/blob.png");
             } else if (map[a][b] == ' ') {
-                elem.setSprite("Games/Nibbler/black.png");
+                elem.setSprite("./Games/Nibbler/black.png");
             }
             element.emplace_back(elem);
         }
