@@ -19,12 +19,12 @@ int main(int ac, char **av)
         TrackPack keycode;
 
         while (!g_test.isGameOver()) {
-            test.draw();
             test.handleInput();
             keycode = test.getEvent();
             g_test.handleInput(keycode);
             g_test.update();
             test.update(g_test.getGameState());
+            test.draw();
         }
     } catch (...) {
         std::cerr << "eeeeeeeeeeeeeeeeeeeeeeeeeeee" << std::endl;
