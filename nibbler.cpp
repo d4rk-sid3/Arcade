@@ -84,10 +84,11 @@ void Nibbler::init()
             }
         }
     }
-    for (int i = 0; i < 4; i++) {
-        int len = map.size();
-        nibbler.push_back({x, y - i});
-        map[y][x] = 'O';
+    map[y][x] = 'O';
+    nibbler.push_back({x, y});
+    for (int i = 0; i < 3; i++) {
+        map[y - i - 1][x] = 'B';
+        nibbler.push_back({x, y - i - 1});
     }
     createElement();
     eatfood();
@@ -115,6 +116,8 @@ void Nibbler::eatfood()
 
 void Nibbler::handleInput(TrackPack keyCode)
 {
+    if (keyCode == NONE)
+        return;
     if ((direction == UP && keyCode != DOWN) ||   
         (direction == DOWN && keyCode != UP) ||   
         (direction == LEFT && keyCode != RIGHT) ||   
@@ -127,23 +130,23 @@ void Nibbler::update()
 {  
     int len = map.size();
     auto head = nibbler.front();  
-    int new_x = head.first;  
+    int new_x = head.first;
     int new_y = head.second;
 
     if (direction == UP) {
-        new_y--;
+        new_y-=1;
     } else if (direction == DOWN) {
-        new_y++;
+        new_y+=1;
     } else if (direction == LEFT) {
-        new_x--;
+        new_x-=1;
     } else if (direction == RIGHT) {
-        new_x++;
+        new_x+=1;
     }
+
     if (map[new_y][new_x] == '#') {
-        is_ended = false;
         return;
     }
-    for (size_t i = 1; i < nibbler.size(); i++) {  
+    for (size_t i = 1; i < nibbler.size(); i++) {
         if (nibbler[i] == std::make_pair(new_x, new_y)) {
             is_ended = true;
             return;
@@ -159,10 +162,9 @@ void Nibbler::update()
     for (int i = 0; i < foods.size(); i++) {
         if (foods[i] == std::make_pair(new_x, new_y)) {
             score += 10;
-            std::cout << "Score: " << score << std::endl;
+            // std::cout << "Score: " << score << std::endl;
             time += 10;
             foods.erase(foods.begin() + i);
-            is_ended = false;
             return;
         }
     }

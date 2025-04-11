@@ -86,7 +86,9 @@ void Snake::eatfood()
 }
 
 void Snake::handleInput(TrackPack keyCode)
-{  
+{
+    if (keyCode == NONE)
+        return;
     if ((direction == UP && keyCode != DOWN) ||   
         (direction == DOWN && keyCode != UP) ||   
         (direction == LEFT && keyCode != RIGHT) ||   

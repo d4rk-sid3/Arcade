@@ -6,18 +6,20 @@
 */
 
 #include "nibbler.hpp"
-#include "sdl.hpp"
+#include "sfml.hpp"
+#include "Ncures.hpp"
 
 int main(int ac, char **av)
 {
     Nibbler g_test;
-    Sdl test;
+    Ncurses test;
 
     try {
         g_test.init();
         test.init(g_test.getGameState());
         TrackPack keycode;
 
+        // std::cout << "GGGGGGGGGGG" << std::endl;
         while (!g_test.isGameOver()) {
             test.handleInput();
             keycode = test.getEvent();

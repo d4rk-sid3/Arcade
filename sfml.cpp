@@ -38,6 +38,7 @@ TrackPack Sfml::getEvent()
 
 void Sfml::init(std::vector <GameElement> configs)
 {
+    keyPressed = NONE;
     oldState.clear();
     for (int a = 0; a < configs.size(); a++) {
         oldState.push_back(configs[a]);
