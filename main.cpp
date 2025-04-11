@@ -7,11 +7,12 @@
 
 #include "nibbler.hpp"
 #include "sfml.hpp"
+#include "Ncures.hpp"
 
 int main(int ac, char **av)
 {
     Nibbler g_test;
-    Sfml test;
+    Ncurses test;
 
     try {
         g_test.init();
