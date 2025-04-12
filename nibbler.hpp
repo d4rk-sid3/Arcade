@@ -30,7 +30,9 @@ class Nibbler : public IGameModule {
         void handleInput(TrackPack keyCode);
         void createElement();
         int getScore() const;
-
+        void createsavepath();
+        bool check_xin();
+ 
     private:
         std::vector<std::string> map;
         std::vector<std::pair<int, int>> nibbler;
@@ -49,6 +51,7 @@ class Nibbler : public IGameModule {
         std::clock_t start;
         double duration;
         const std::string filepath = "NibblerConfig.txt";
+        const std::string savefilepath = "NibblerSave.txt";
         TrackPack previous;
         
 };

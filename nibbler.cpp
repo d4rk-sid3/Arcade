@@ -16,11 +16,53 @@ Nibbler::Nibbler()
 {
 }
 
+void Nibbler::createsavepath()
+{
+    std::ofstream outFile(savefilepath, std::ios::trunc);
+    if (outFile.is_open()) {
+        outFile << "WIDTH=" << width << std::endl;
+        outFile << "HEIGHT=" << height << std::endl;
+        if (direction == DOWN) {
+            outFile << "DIRECTION=" << "DOWN" << std::endl;
+        } else if (direction == UP) {
+            outFile << "DIRECTION=" << "UP" << std::endl;
+        } else if (direction == LEFT) {
+            outFile << "DIRECTION=" << "LEFT" << std::endl;
+        } else if (direction == RIGHT) {
+            outFile << "DIRECTION=" << "RIGHT" << std::endl;
+        }
+        outFile << "PREVIOUS=" << previous << std::endl;
+        outFile << "HEAD_NIBBLER_X=" << nibbler[0].first << std::endl;
+        outFile << "HEAD_NIBBLER_Y=" << nibbler[0].second << std::endl;
+        outFile << "FOOD_X=" << x_food << std::endl;
+        outFile << "FOOD_Y=" << y_food << std::endl;
+        outFile << "NB_FOOD=" << nb_fruit << std::endl;
+        outFile << "SCORE=" << score << std::endl;
+        outFile << "TIME=" << time << std::endl;
+        outFile << "IS_ENDED=" << is_ended << std::endl;
+        outFile << "MAP=" << std::endl;
+        for (int i = 0; i < map.size(); i++) {
+            outFile << map[i] << std::endl;
+        }
+        outFile.close();
+    } else {
+        std::cerr << "Impossible d'ouvrir le fichier";
+    }
+}
+
 void Nibbler::init()
 {
-    std::ifstream file(filepath);  
+    std::string filetoopen;
+    std::ifstream outFile(savefilepath);
+    if (outFile.is_open()) {
+        filetoopen = savefilepath;
+        outFile.close();
+    } else {
+        filetoopen = filepath;
+    }
+    std::ifstream file(filetoopen);  
     if (!file) {  
-        std::cerr << "Error opening file: " << filepath << std::endl;
+        std::cerr << "Error opening file: " << filetoopen << std::endl;
         std::exit(84);
         return;  
     }  
@@ -95,14 +137,29 @@ void Nibbler::init()
             }
         }
     }
-    map[y][x] = 'O';
+
     nibbler.push_back({x, y});
-    for (int i = 0; i < 3; i++) {
-        map[y - i - 1][x] = 'B';
-        nibbler.push_back({x, y - i - 1});
+    for (int i = 0; i < map.size(); i++) {
+        for (int j = 0; j < map[i].size(); j++) {
+            if (map[i][j] == 'B') {
+                nibbler.push_back({j, i});
+            }
+        }
     }
     createElement();
-    eatfood();
+    if (!check_xin())
+        eatfood();
+}
+
+bool Nibbler::check_xin()
+{
+    for (int i = 0; i < map.size(); i++) {
+        for (int j = 0; j < map[i].size(); j++) {
+            if (map[i][j] == 'X')
+                return true;
+        }
+    }
+    return false;
 }
 
 void Nibbler::eatfood()
@@ -179,7 +236,6 @@ void Nibbler::update()
         if (nibbler[i] == std::make_pair(new_x, new_y)) {
             is_ended = true;
             createElement();
-            std::this_thread::sleep_for(std::chrono::milliseconds(time));
             return;
         }  
     }
@@ -213,6 +269,7 @@ void Nibbler::update()
         nibbler.pop_back();
     }
     createElement();
+    createsavepath();
     return;  
 }
 

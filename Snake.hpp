@@ -30,6 +30,8 @@ class Snake : public IGameModule {
         std::vector <GameElement> getGameState() const;
         void handleInput(TrackPack keyCode);
         void createElement();
+        void createsavepath();
+        bool check_xin();
 
     private:
         std::vector<std::string> map;
@@ -45,6 +47,7 @@ class Snake : public IGameModule {
         std::string m;
         int time;
         const std::string filepath = "SnakeConfig.txt";
+        const std::string savefilepath = "SnakeSave.txt";
 };
 
 #endif /* !SNAKE_HPP_ */

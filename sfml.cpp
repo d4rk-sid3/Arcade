@@ -13,6 +13,7 @@ Sfml::Sfml() : window(sf::VideoMode(1920, 1080), "Arcade", sf::Style::Titlebar |
 
 void Sfml::handleInput()
 {
+    keyPressed = NONE;
     stop();
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
         keyPressed =  UP;
