@@ -49,6 +49,7 @@ class Nibbler : public IGameModule {
         std::clock_t start;
         double duration;
         const std::string filepath = "NibblerConfig.txt";
+        TrackPack previous;
         
 };
 #endif /* !nibbler_HPP_ */
