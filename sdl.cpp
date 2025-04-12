@@ -22,33 +22,35 @@ void Sdl::handleInput()
 
     if (keyboard[SDL_SCANCODE_UP])
         keyPressed =  UP;
-    if (keyboard[SDL_SCANCODE_DOWN])
+    else if (keyboard[SDL_SCANCODE_DOWN])
         keyPressed =  DOWN;
-    if (keyboard[SDL_SCANCODE_LEFT])
+    else if (keyboard[SDL_SCANCODE_LEFT])
         keyPressed =  LEFT;
-    if (keyboard[SDL_SCANCODE_RIGHT])
+    else if (keyboard[SDL_SCANCODE_RIGHT])
         keyPressed =  RIGHT;
-    if (keyboard[SDLK_q]) {
+    else if (keyboard[SDLK_q]) {
         keyPressed = QUIT;
         oldState.~vector();
         SDL_DestroyWindow(m_pWindow);
         SDL_DestroyRenderer(m_pRenderer);
         SDL_Quit();
     }
-    if (keyboard[SDLK_l])
+    else if (keyboard[SDLK_l])
         keyPressed =  LIB_LEFT;
-    if (keyboard[SDLK_r])
+    else if (keyboard[SDLK_r])
         keyPressed =  LIB_RIGHT;
-    if (keyboard[SDLK_m])
+    else if (keyboard[SDLK_m])
         keyPressed =  MENU;
-    if (keyboard[SDLK_u])
+    else if (keyboard[SDLK_u])
         keyPressed =  GAME_LEFT;
-    if (keyboard[SDLK_d])
+    else if (keyboard[SDLK_d])
         keyPressed =  GAME_RIGHT;
-    if (keyboard[SDLK_p])
+    else if (keyboard[SDLK_p])
         keyPressed = PAUSE;
-    if (keyboard[SDLK_n])
+    else if (keyboard[SDLK_n])
         keyPressed =  RESTART;
+    else
+        keyPressed = NONE;
 }
 
 TrackPack Sdl::getEvent()
@@ -143,14 +145,13 @@ void Sdl::stop()
     return;
 }
 
-void SDL::destroy()
+void Sdl::destroy()
 {
     oldState.~vector();
     for (int i = 0; i < images.size(); i++) {
-        SDL_DestroyTexture(std::get<4>(images[i]))
+        SDL_DestroyTexture(std::get<4>(images[i]));
     }
     SDL_DestroyWindow(m_pWindow);
     SDL_DestroyRenderer(m_pRenderer);
     SDL_Quit();
-    
 }

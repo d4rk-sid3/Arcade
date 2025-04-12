@@ -50,14 +50,18 @@ void Nibbler::createsavepath()
     }
 }
 
-void Nibbler::init()
+void Nibbler::init(bool _restart)
 {
     std::string filetoopen;
+     
     std::ifstream outFile(savefilepath);
     if (outFile.is_open()) {
         filetoopen = savefilepath;
         outFile.close();
     } else {
+        filetoopen = filepath;
+    }
+    if (_restart == true) {
         filetoopen = filepath;
     }
     std::ifstream file(filetoopen);  
@@ -137,7 +141,7 @@ void Nibbler::init()
             }
         }
     }
-
+    is_paused = false;
     nibbler.push_back({x, y});
     for (int i = 0; i < map.size(); i++) {
         for (int j = 0; j < map[i].size(); j++) {
@@ -222,6 +226,10 @@ void Nibbler::update()
     int new_x = head.first;
     int new_y = head.second;
     
+    if (is_paused) {
+        createElement();
+        return;
+    }
     if (direction == UP) {
         new_y-=1;
     } else if (direction == DOWN) {
@@ -313,4 +321,17 @@ std::vector <GameElement> Nibbler::getGameState() const
 int Nibbler::getScore() const
 {
     return score;
+}
+
+void Nibbler::setpaused()
+{
+    is_paused = !is_paused;
+}
+
+void Nibbler::destroy()
+{
+    map.clear();
+    nibbler.clear();
+    foods.clear();
+    element.clear();
 }

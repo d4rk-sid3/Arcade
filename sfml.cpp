@@ -19,40 +19,38 @@ void Sfml::handleInput()
     stop();
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
         keyPressed =  UP;
-    }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
+    } else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
         keyPressed =  DOWN;
-    }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
+    } else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
         keyPressed =  LEFT;
-    }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
+    } else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
         keyPressed =  RIGHT;
-    }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
+    } else if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
         keyPressed = QUIT;
         window.close();
     }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::L)) {
+    else if (sf::Keyboard::isKeyPressed(sf::Keyboard::L)) {
         keyPressed = LIB_LEFT;
     }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::R)) {
+    else if (sf::Keyboard::isKeyPressed(sf::Keyboard::R)) {
         keyPressed = LIB_RIGHT;
     }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::M)) {
+    else if (sf::Keyboard::isKeyPressed(sf::Keyboard::M)) {
         keyPressed = MENU;
     }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::U)) {
+    else if (sf::Keyboard::isKeyPressed(sf::Keyboard::U)) {
         keyPressed = GAME_LEFT;
     }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
+    else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
         keyPressed = GAME_RIGHT;
     }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::N)) {
+    else if (sf::Keyboard::isKeyPressed(sf::Keyboard::N)) {
         keyPressed = RESTART;
     }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::P)) {
+    else if (sf::Keyboard::isKeyPressed(sf::Keyboard::P)) {
         keyPressed = PAUSE;
+    } else {
+        keyPressed = NONE;
     }
 }
 
