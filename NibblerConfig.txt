@@ -8,7 +8,7 @@ FOOD_X=0
 FOOD_Y=0
 NB_FOOD=12
 SCORE=0
-TIME=20
+TIME=150
 IS_ENDED=FALSE
 MAP=
 ################################################

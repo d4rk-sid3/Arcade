@@ -61,7 +61,7 @@ void Sfml::init(std::vector <GameElement> configs)
 
 void Sfml::draw()
 {
-    window.setFramerateLimit(10);
+    // window.setFramerateLimit(10);
     handleInput();
     window.clear();
     for (int i = 0; i < images.size(); i++)

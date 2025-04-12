@@ -81,7 +81,7 @@ void Sdl::drawSprite(SDL_infos info)
 void Sdl::draw()
 {
     //m_pWindow.setFramerateLimit(10);
-    SDL_Delay(20);
+    // SDL_Delay(20);
     handleInput();
     SDL_RenderClear(m_pRenderer);
     for (int i = 0; i < images.size(); i++)
