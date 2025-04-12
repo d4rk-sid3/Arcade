@@ -209,7 +209,7 @@ void Nibbler::update()
     auto head = nibbler.front();  
     int new_x = head.first;
     int new_y = head.second;
-
+    
     if (direction == UP) {
         new_y-=1;
     } else if (direction == DOWN) {
@@ -224,6 +224,7 @@ void Nibbler::update()
         if (nibbler[i] == std::make_pair(new_x, new_y)) {
             is_ended = true;
             createElement();
+            std::this_thread::sleep_for(std::chrono::milliseconds(time));
             return;
         }  
     }
@@ -256,7 +257,6 @@ void Nibbler::update()
         map[tail.second][tail.first] = ' ';
         nibbler.pop_back();
     }
-    std::this_thread::sleep_for(std::chrono::milliseconds(time));
     createElement();
     createsavepath();
     return;  
@@ -291,6 +291,7 @@ void Nibbler::createElement()
             element.emplace_back(elem);
         }
     }
+    std::this_thread::sleep_for(std::chrono::milliseconds(time));
 }
 
 std::vector <GameElement> Nibbler::getGameState() const

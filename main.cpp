@@ -8,12 +8,12 @@
 #include "nibbler.hpp"
 #include "sfml.hpp"
 #include "Ncures.hpp"
-#include "sdl.hpp"
+// #include "sdl.hpp"
 #include "Snake.hpp"
 
 int main(int ac, char **av)
 {
-    Snake g_test;
+    Nibbler g_test;
     Sfml test;
 
     try {

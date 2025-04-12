@@ -8,6 +8,7 @@
 #include "Ncures.hpp"
 #include <iostream>
 #include <fstream>
+#include <thread>
 
 Ncurses::Ncurses()
 {
@@ -24,9 +25,7 @@ void Ncurses::init(std::vector <GameElement> configs)
     initscr();
     noecho();
     win = newwin(0,0,0,0);
-    // keypad(win, TRUE);
     nodelay(win, true);
-    std::cout << "GGGGGGGGGGG" << std::endl;
     oldState.clear();
     for (int a = 0; a < configs.size(); a++) {
         oldState.push_back(configs[a]);
@@ -35,21 +34,16 @@ void Ncurses::init(std::vector <GameElement> configs)
 }
 
 void Ncurses::draw()
-{   
-    static bool check = false;
-    // handleInput();
-
-    if (!check) {
-        wclear(win);
-        for (int i = 0; i < oldState.size(); i++) {
-            int y = oldState[i].getPosY();
-            int x = oldState[i].getPosX();
-            char symbol = oldState[i].getSymbol();
-            mvwprintw(win, y, x,"%c", symbol);
-        }
-        wrefresh(win);
-        check = true;
+{
+    wclear(win);
+    for (int i = 0; i < oldState.size(); i++) {
+        int y = oldState[i].getPosY();
+        int x = oldState[i].getPosX();
+        char symbol = oldState[i].getSymbol();
+        mvwaddch(win, y, x, symbol);
+        // wrefresh(win);
     }
+    wrefresh(win);
 }
 
 void Ncurses::update(std::vector<GameElement> configs)
@@ -86,18 +80,13 @@ void Ncurses::handleInput()
                 keyPressed = RIGHT;
                 break;
             case 'q':
-                endwin();
+                keyPressed = QUIT;
+                break;
             default:
                 break;
         }
     }
-    std::ofstream outFile("example.txt");
-    if (outFile.is_open()) {
-        outFile << c << "      " << keyPressed << "\n";
-        outFile.close();
-    } else {
-        std::cerr << "Impossible d'ouvrir le fichier";
-    }
+    // std::this_thread::sleep_for(std::chrono::milliseconds(100));
 }
 
 TrackPack Ncurses::getEvent()
