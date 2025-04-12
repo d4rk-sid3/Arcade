@@ -173,13 +173,15 @@ void Snake::update()
     map[head.second][head.first] = 'B';
     snake.insert(snake.begin(), {new_x, new_y});  
     if (new_x == x_food && new_y == y_food) {
-        eatfood();  
+        eatfood();
+        time -= 10;
     } else {  
         auto tail = snake.back();
         map[tail.second][tail.first] = ' '; 
         snake.pop_back();  
     }
     map[new_y][new_x] = 'O';
+    std::this_thread::sleep_for(std::chrono::milliseconds(time));
     createElement();
     return;  
 }

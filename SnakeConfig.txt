@@ -6,7 +6,7 @@ HEAD_SNAKE_Y=15
 FOOD_X=0
 FOOD_Y=0
 SCORE=0
-TIME=20
+TIME=150
 IS_ENDED=FALSE
 MAP=
 ################################################

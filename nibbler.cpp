@@ -193,7 +193,7 @@ void Nibbler::update()
             if (foods[i] == std::make_pair(new_x, new_y)) {
                 score += 10;
                 // std::cout << "Score: " << score << std::endl;
-                time += 10;
+                time -= 10;
                 map[head.second][head.first] = 'B';
                 nibbler.insert(nibbler.begin(), {new_x, new_y});
                 map[new_y][new_x] = 'O';
@@ -211,6 +211,7 @@ void Nibbler::update()
         map[tail.second][tail.first] = ' ';
         nibbler.pop_back();
     }
+    std::this_thread::sleep_for(std::chrono::milliseconds(time));
     createElement();
     return;  
 }
