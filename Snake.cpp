@@ -47,7 +47,7 @@ void Snake::createsavepath()
     }
 }
 
-void Snake::init()
+void Snake::init(bool _restart)
 {
     std::string filetoopen;
     std::ifstream outFile(savefilepath);
@@ -57,7 +57,9 @@ void Snake::init()
     } else {
         filetoopen = filepath;
     }
-    // std::cout << filetoopen << std::endl;
+    if (_restart == true) {
+        filetoopen = filepath;
+    }
     std::ifstream file(filetoopen);  
     if (!file) {  
         std::cerr << "Error opening file: " << filetoopen << std::endl;
@@ -121,6 +123,7 @@ void Snake::init()
             }
         }
     }
+    is_paused = false;
     snake.push_back({x, y});
     for (int i = 0; i < map.size(); i++) {
         for (int j = 0; j < map[i].size(); j++) {
@@ -175,6 +178,10 @@ void Snake::update()
     int new_x = head.first;  
     int new_y = head.second;  
 
+    if (is_paused) {
+        createElement();
+        return;
+    }
     if (direction == UP) {
         new_y--;
     } else if (direction == DOWN) {
@@ -210,7 +217,6 @@ void Snake::update()
         snake.pop_back();  
     }
     map[new_y][new_x] = 'O';
-    std::this_thread::sleep_for(std::chrono::milliseconds(time));
     createElement();
     createsavepath();
     return;  
@@ -250,9 +256,22 @@ void Snake::createElement()
             element.emplace_back(elem);
         }
     }
+    std::this_thread::sleep_for(std::chrono::milliseconds(time));
 }
 
 int Snake::getScore() const
 {
     return score;
+}
+
+void Snake::setpaused()
+{
+    is_paused = !is_paused;
+}
+
+void Snake::destroy()
+{
+    map.clear();
+    snake.clear();
+    element.clear();
 }

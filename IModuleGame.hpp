@@ -47,7 +47,7 @@ class IGameModule {
          * 
          * Créer les élémnts nécessaires à la réalisation du jeu
          */
-        virtual void init() = 0;
+        virtual void init(bool _restart) = 0;
 
         /**
          * @brief Mise à jour des objets du jeu
@@ -88,6 +88,10 @@ class IGameModule {
          * @return Vrai si le jeu est terminé Faux dans le cas contraire
          */
         virtual bool isGameOver() const = 0;
+
+        virtual void setpaused() = 0;
+
+        virtual void destroy() = 0;
 };
 
 #endif /* !IMODULEGAME_HPP_ */
