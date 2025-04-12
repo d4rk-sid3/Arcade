@@ -147,7 +147,19 @@ void Nibbler::init()
         }
     }
     createElement();
-    eatfood();
+    if (!check_xin())
+        eatfood();
+}
+
+bool Nibbler::check_xin()
+{
+    for (int i = 0; i < map.size(); i++) {
+        for (int j = 0; j < map[i].size(); j++) {
+            if (map[i][j] == 'X')
+                return true;
+        }
+    }
+    return false;
 }
 
 void Nibbler::eatfood()
@@ -209,7 +221,7 @@ void Nibbler::update()
     auto head = nibbler.front();  
     int new_x = head.first;
     int new_y = head.second;
-
+    
     if (direction == UP) {
         new_y-=1;
     } else if (direction == DOWN) {
@@ -256,7 +268,6 @@ void Nibbler::update()
         map[tail.second][tail.first] = ' ';
         nibbler.pop_back();
     }
-    std::this_thread::sleep_for(std::chrono::milliseconds(time));
     createElement();
     createsavepath();
     return;  
@@ -291,6 +302,7 @@ void Nibbler::createElement()
             element.emplace_back(elem);
         }
     }
+    std::this_thread::sleep_for(std::chrono::milliseconds(time));
 }
 
 std::vector <GameElement> Nibbler::getGameState() const

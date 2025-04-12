@@ -31,6 +31,7 @@ class Snake : public IGameModule {
         void handleInput(TrackPack keyCode);
         void createElement();
         void createsavepath();
+        bool check_xin();
 
     private:
         std::vector<std::string> map;

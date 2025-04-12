@@ -12,9 +12,9 @@
 #include "Snake.hpp"
 
 int main(int ac, char **av)
-{
+{   
     Snake g_test;
-    Sdl test;
+    Sfml test;
 
     try {
         g_test.init();
