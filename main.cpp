@@ -14,7 +14,7 @@
 int main(int ac, char **av)
 {
     Snake g_test;
-    Sfml test;
+    Sdl test;
 
     try {
         g_test.init();
@@ -27,7 +27,6 @@ int main(int ac, char **av)
             keycode = test.getEvent();
             g_test.handleInput(keycode);
             g_test.update();
-        // std::cout << "GGGGGGGGGGG" << std::endl;
             test.update(g_test.getGameState());
             test.draw();
         }

@@ -1,32 +1,22 @@
 WIDTH=49
 HEIGHT=31
-DIRECTION=RIGHT
-HEAD_SNAKE_X=39
-HEAD_SNAKE_Y=17
-FOOD_X=44
-FOOD_Y=28
+DIRECTION=UP
+HEAD_SNAKE_X=12
+HEAD_SNAKE_Y=1
+FOOD_X=42
+FOOD_Y=27
 SCORE=0
-TIME=150
-IS_ENDED=254
+TIME=90
+IS_ENDED=174
 MAP=
 ################################################
-#                                              #
-#                                              #
-#                                              #
-#                                              #
-#                                              #
-#                                              #
-#                                  X           #
-#                                              #
-#                                              #
-#                                              #
-#                                              #
-#                                              #
-#                                              #
-#                                              #
-#                                              #
-#                                              #
-#                                      O       #
+#           O                                  #
+#           B                                  #
+#           B                                  #
+#           B                                  #
+#           B                                  #
+#           B                                  #
+#           B                                  #
 #                                              #
 #                                              #
 #                                              #
@@ -37,5 +27,15 @@ MAP=
 #                                              #
 #                                              #
 #                                              #
-#                                           X  #
+#                                              #
+#                                              #
+#                                              #
+#                                              #
+#                                              #
+#                                              #
+#                                              #
+#                                         X    #
+#                                              #
+#                                         X    #
+#                                              #
 ################################################
