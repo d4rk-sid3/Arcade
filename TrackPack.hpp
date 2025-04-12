@@ -19,7 +19,14 @@ enum TrackPack {
     LEFT,       /**< Represents left key*/
     ENTER,      /**< Represents enter key*/
     QUIT,       /**< Represents quit key*/
-    NONE        /**< Represents any other key*/
+    NONE,        /**< Represents any other key*/
+    LIB_RIGHT,
+    LIB_LEFT,
+    GAME_RIGHT,
+    GAME_LEFT,
+    MENU,
+    RESTART,
+    PAUSE
 };
 
 #endif /* !TRACKPACK_HPP_ */

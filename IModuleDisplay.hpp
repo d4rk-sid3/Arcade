@@ -78,6 +78,8 @@ class IModuleDisplay {
          * Détruit les assets et libère la mémoire
          */
         virtual void stop() = 0;
+
+        virtual void destroy() = 0;
 };
 
 #endif /* !IMODULEDISPLAY_HPP_ */

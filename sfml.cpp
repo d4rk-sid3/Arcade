@@ -7,7 +7,9 @@
 
 #include "sfml.hpp"
 
-Sfml::Sfml() : window(sf::VideoMode(1920, 1080), "Arcade", sf::Style::Titlebar | sf::Style::Resize | sf::Style::Close)
+Sfml* Sfml::s_pInstance = 0;
+
+Sfml::Sfml()
 {
 }
 
@@ -27,8 +29,30 @@ void Sfml::handleInput()
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
         keyPressed =  RIGHT;
     }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q)) {
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
+        keyPressed = QUIT;
         window.close();
+    }
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::L)) {
+        keyPressed = LIB_LEFT;
+    }
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::R)) {
+        keyPressed = LIB_RIGHT;
+    }
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::M)) {
+        keyPressed = MENU;
+    }
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::U)) {
+        keyPressed = GAME_LEFT;
+    }
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
+        keyPressed = GAME_RIGHT;
+    }
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::N)) {
+        keyPressed = RESTART;
+    }
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::P)) {
+        keyPressed = PAUSE;
     }
 }
 
@@ -39,6 +63,7 @@ TrackPack Sfml::getEvent()
 
 void Sfml::init(std::vector <GameElement> configs)
 {
+    window.create(sf::VideoMode(1920, 1080), "Arcade", sf::Style::Titlebar | sf::Style::Resize | sf::Style::Close);
     keyPressed = NONE;
     oldState.clear();
     for (int a = 0; a < configs.size(); a++) {
@@ -62,7 +87,6 @@ void Sfml::init(std::vector <GameElement> configs)
 
 void Sfml::draw()
 {
-    // window.setFramerateLimit(10);
     handleInput();
     window.clear();
     for (int i = 0; i < images.size(); i++)
@@ -98,8 +122,17 @@ void Sfml::stop()
 {
     while (window.pollEvent(event)) {  
         if (event.type == sf::Event::Closed) {
-            oldState.~vector();
-            window.close();  
+            keyPressed = QUIT;
         }
+    }
+}
+
+void Sfml::destroy()
+{
+    oldState.~vector();
+    window.close();
+    for (int i = 0; i < images.size(); i++) {
+        delete images[i].first;
+        delete images[i].second;
     }
 }
