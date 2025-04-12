@@ -20,6 +20,7 @@ int main(int ac, char **av)
         g_test.init();
         test.init(g_test.getGameState());
         TrackPack keycode;
+        int a = 0;
 
         while (!g_test.isGameOver()) {
             test.handleInput();
