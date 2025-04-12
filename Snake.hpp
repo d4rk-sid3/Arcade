@@ -25,14 +25,11 @@ class Snake : public IGameModule {
         void init() override;
         void update() override;
         void eatfood();
-        const std::vector<std::string>& getMap() const;
         bool isGameOver() const;
-
-        ////////////////
         int getScore() const;
         std::vector <GameElement> getGameState() const;
         void handleInput(TrackPack keyCode);
-        void setall(int w, int h, const std::string& filename);
+        void createElement();
 
     private:
         std::vector<std::string> map;
@@ -47,6 +44,7 @@ class Snake : public IGameModule {
         std::vector <GameElement> element;
         std::string m;
         int time;
+        const std::string filepath = "SnakeConfig.txt";
 };
 
 #endif /* !SNAKE_HPP_ */
