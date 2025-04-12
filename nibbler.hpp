@@ -31,7 +31,8 @@ class Nibbler : public IGameModule {
         void createElement();
         int getScore() const;
         void createsavepath();
-
+        bool check_xin();
+ 
     private:
         std::vector<std::string> map;
         std::vector<std::pair<int, int>> nibbler;

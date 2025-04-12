@@ -147,7 +147,19 @@ void Nibbler::init()
         }
     }
     createElement();
-    eatfood();
+    if (!check_xin())
+        eatfood();
+}
+
+bool Nibbler::check_xin()
+{
+    for (int i = 0; i < map.size(); i++) {
+        for (int j = 0; j < map[i].size(); j++) {
+            if (map[i][j] == 'X')
+                return true;
+        }
+    }
+    return false;
 }
 
 void Nibbler::eatfood()
@@ -224,7 +236,6 @@ void Nibbler::update()
         if (nibbler[i] == std::make_pair(new_x, new_y)) {
             is_ended = true;
             createElement();
-            std::this_thread::sleep_for(std::chrono::milliseconds(time));
             return;
         }  
     }

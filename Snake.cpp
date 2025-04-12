@@ -130,7 +130,19 @@ void Snake::init()
         }
     }
     createElement();
-    eatfood();
+    if (!check_xin())
+        eatfood();
+}
+
+bool Snake::check_xin()
+{
+    for (int i = 0; i < map.size(); i++) {
+        for (int j = 0; j < map[i].size(); j++) {
+            if (map[i][j] == 'X')
+                return true;
+        }
+    }
+    return false;
 }
 
 void Snake::eatfood()

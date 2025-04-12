@@ -19,7 +19,8 @@ Sdl::Sdl()
 }
 
 void Sdl::handleInput()
-{
+{   
+    keyPressed = NONE;
     stop();
     SDL_PumpEvents(); //Refresh the keyboard
     const Uint8* keyboard = SDL_GetKeyboardState(NULL);
@@ -45,6 +46,7 @@ TrackPack Sdl::getEvent()
 
 void Sdl::init(std::vector <GameElement> configs)
 {
+    keyPressed = NONE;
     oldState.clear();
     for (int a = 0; a < configs.size(); a++) {
         oldState.push_back(configs[a]);
