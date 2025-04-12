@@ -35,16 +35,21 @@ void Ncurses::init(std::vector <GameElement> configs)
 }
 
 void Ncurses::draw()
-{
+{   
+    static bool check = false;
     // handleInput();
-    wclear(win);
-    for (int i = 0; i < oldState.size(); i++) {
-        int y = oldState[i].getPosY();
-        int x = oldState[i].getPosX();
-        char symbol = oldState[i].getSymbol();
-        mvwprintw(win, y, x,"%c", symbol);
+
+    if (!check) {
+        wclear(win);
+        for (int i = 0; i < oldState.size(); i++) {
+            int y = oldState[i].getPosY();
+            int x = oldState[i].getPosX();
+            char symbol = oldState[i].getSymbol();
+            mvwprintw(win, y, x,"%c", symbol);
+        }
+        wrefresh(win);
+        check = true;
     }
-    wrefresh(win);
 }
 
 void Ncurses::update(std::vector<GameElement> configs)
