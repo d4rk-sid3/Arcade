@@ -9,10 +9,11 @@
 #include "sfml.hpp"
 #include "Ncures.hpp"
 #include "sdl.hpp"
+#include "Snake.hpp"
 
 int main(int ac, char **av)
 {
-    Nibbler g_test;
+    Snake g_test;
     Sfml test;
 
     try {

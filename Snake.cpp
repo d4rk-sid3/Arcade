@@ -45,34 +45,77 @@ Snake::Snake()
 
 void Snake::init()
 {
-    for (int a = 0; a < map.size(); a++) {
-        for (int b = 0; b < map[0].size(); b++) {
-            GameElement elem;
-            elem.setPosX(b);
-            elem.setPosY(a);
-            elem.setSymbol(map[a][b]);
-            if (map[a][b] == '#') {
-                elem.setSprite("Games/Nibbler/wall.png");
-            } else if (map[a][b] == 'O') {
-                elem.setSprite("Games/Nibbler/head.png");
-            } else if (map[a][b] == 'X') {
-                elem.setSprite("Games/Nibbler/apple.png");
-            } else if (map[a][b] == 'B') {
-                elem.setSprite("Games/Nibbler/blob.png");
+        std::ifstream file(filepath);  
+    if (!file) {  
+        std::cerr << "Error opening file: " << filepath << std::endl;
+        std::exit(84);
+        return;  
+    }  
+    std::string line;
+    std::string map_line;
+
+    while (std::getline(file, line)) {
+        std::stringstream l(line);
+        std::string key;
+        std::string value;
+        std::getline(l, key, '=');
+        std::getline(l, value, '=');
+        if (key == "WIDTH") {
+            width = std::stoi(value);
+        }
+        if (key == "HEIGHT") {
+            height = std::stoi(value);
+        }
+        if (key == "DIRECTION") {
+            if (value == "DOWN") {
+                direction = DOWN;
+            } else if (value == "UP") {
+                direction = UP;
+            } else if (value == "LEFT") {
+                direction = LEFT;
+            } else if (value == "RIGHT") {
+                direction = RIGHT;
             }
-            element.push_back(elem);
+        }
+        if (key == "HEAD_SNAKE_X") {
+            x = std::stoi(value);
+        }
+        if (key == "HEAD_SNAKE_Y") {
+            y = std::stoi(value);
+        }
+        if (key == "FOOD_X") {
+            x_food = std::stoi(value);
+        }
+        if (key == "FOOD_Y") {
+            y_food = std::stoi(value);
+        }
+        if (key == "SCORE") {
+            score = std::stoi(value);
+        }
+        if (key == "TIME") {
+            time = std::stoi(value);
+        }
+        if (key == "IS_ENDED") {
+            if (value == "FALSE") {
+                is_ended = false;
+            } else if (value == "TRUE") {
+                is_ended = true;
+            }
+        }
+        if (key == "MAP") {
+            while (std::getline(file, map_line)) {
+                map.push_back(map_line);
+            }
         }
     }
-    int len = map.size();
     snake.push_back({x, y});
-    element[(y * len) + x].setSymbol('O');
-    map[y][x] = 'O';  
+    map[y][x] = 'O';
+    createElement();
     eatfood();
 }
 
 void Snake::eatfood()
 {
-    int len = map.size();
     std::srand(std::time(nullptr));
 
     x_food = x;
@@ -81,7 +124,6 @@ void Snake::eatfood()
         x_food = std::rand() % map[0].size();  
         y_food = std::rand() % map.size();  
     }
-    element[(y_food * len) + x_food].setSymbol('X');
     map[y_food][x_food] = 'X';
 }
 
@@ -114,39 +156,32 @@ void Snake::update()
         new_x++;
     }
 
-    if (new_x < 0 || new_x >= map[0].size() || new_y < 0 || new_y >= map.size()) {
-        is_ended = true; 
+    if (map[new_y][new_x] == '#') {
+        is_ended = true;
+        createElement();
         return;
     }
 
     for (size_t i = 1; i < snake.size(); i++) {  
         if (snake[i] == std::make_pair(new_x, new_y)) {  
             is_ended = true;
+            createElement();
             return;
         }  
     }
 
-    if (!snake.empty()) {
-        map[head.second][head.first] = 'B';
-        element[(head.second * len) + head.first].setSymbol('B');
-    }
+    map[head.second][head.first] = 'B';
     snake.insert(snake.begin(), {new_x, new_y});  
     if (new_x == x_food && new_y == y_food) {
         eatfood();  
     } else {  
         auto tail = snake.back();
-        element[(tail.second * len) + tail.first].setSymbol(' ');
         map[tail.second][tail.first] = ' '; 
         snake.pop_back();  
     }
-    element[(new_y * len) + new_x].setSymbol('O');
     map[new_y][new_x] = 'O';
+    createElement();
     return;  
-}
-
-const std::vector<std::string>& Snake::getMap() const
-{  
-    return map;  
 }
 
 bool Snake::isGameOver() const
@@ -159,18 +194,33 @@ std::vector <GameElement> Snake::getGameState() const
     return element;
 }
 
-void Snake::setall(int w, int h, const std::string& filename)
+void Snake::createElement()
 {
-    width = w;
-    height = h;
-    m = filename;
-    direction = DOWN;
-    x = (width / 2);
-    y = (height / 2);
-    x_food = 0;
-    y_food = 0;
-    map = readtable(m);
-    score = 0;
-    time = 20;
-    is_ended = false;
+    element.clear();
+    for (int a = 0; a < map.size(); a++) {
+        for (int b = 0; b < map[0].size(); b++) {
+            GameElement elem;
+            elem.setPosX(b);
+            elem.setPosY(a);
+            elem.setSymbol(map[a][b]);
+            elem.setSpriteSize(20);
+            if (map[a][b] == '#') {
+                elem.setSprite("./Games/Snake/wall.png");
+            } else if (map[a][b] == 'O') {
+                elem.setSprite("./Games/Snake/head.png");
+            } else if (map[a][b] == 'X') {
+                elem.setSprite("./Games/Snake/apple.png");
+            } else if (map[a][b] == 'B') {
+                elem.setSprite("./Games/Snake/blob.png");
+            } else if (map[a][b] == ' ') {
+                elem.setSprite("./Games/Snake/black.png");
+            }
+            element.emplace_back(elem);
+        }
+    }
+}
+
+int Snake::getScore() const
+{
+    return score;
 }
