@@ -7,7 +7,7 @@
 
 #ifndef NCURSES_HPP_
 #define NCURSES_HPP_
-#include "IModuleDisplay.hpp"
+#include "./../../IModuleDisplay.hpp"
 #include "ncurses.h"
 #include <iostream>
 

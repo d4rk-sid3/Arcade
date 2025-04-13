@@ -204,15 +204,15 @@ void Nibbler::handleInput(TrackPack keyCode)
         new_x+=1;
     }
 
-    if (map[new_y][new_x] == '#') {
-        direction = previous;
+    if (map[new_y][new_x] == '#' || map[new_y][new_x] == 'B') {
+        // direction = previous;
         return;
     }
     if ((direction == UP && keyCode != DOWN) ||   
         (direction == DOWN && keyCode != UP) ||   
         (direction == LEFT && keyCode != RIGHT) ||   
         (direction == RIGHT && keyCode != LEFT)) {
-        previous = direction;
+        // previous = direction;
         direction = keyCode;  
     }
 

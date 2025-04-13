@@ -5,11 +5,11 @@
 ** main
 */
 
-#include "nibbler.hpp"
-#include "sfml.hpp"
-#include "Ncures.hpp"
-#include "sdl.hpp"
-#include "Snake.hpp"
+#include "LibGames/Nibbler/nibbler.hpp"
+#include "LibDisplay/NCURSES/Ncures.hpp"
+#include "LibDisplay/SDL/sdl.hpp"
+#include "LibDisplay/SFML/sfml.hpp"
+#include "LibGames/Snake/Snake.hpp"
 
 enum update_return
 {

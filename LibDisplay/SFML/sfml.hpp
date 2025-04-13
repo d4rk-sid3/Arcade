@@ -2,24 +2,21 @@
 ** EPITECH PROJECT, 2025
 ** B-OOP-400-COT-4-1-arcade-amour.guidi
 ** File description:
-** sdl
+** sfml
 */
 
-#ifndef SDL_HPP_
-#define SDL_HPP_
-#include "SDL2/SDL.h"
-#include <SDL2/SDL_image.h>
-#include "IModuleDisplay.hpp"
+#ifndef SFML_HPP_
+#define SFML_HPP_
+#include "./../../IModuleDisplay.hpp"
+#include <SFML/Graphics.hpp>
 #include <iostream>
 
-using SDL_infos = std::tuple<int, int, int, int, SDL_Texture*>;
-
-class Sdl : public IModuleDisplay {
+class Sfml : public IModuleDisplay {
     public:
-        ~Sdl();
-        static Sdl* getInstance() {
+        ~Sfml();
+        static Sfml* getInstance() {
             if (s_pInstance == nullptr) {
-                s_pInstance = new Sdl();
+                s_pInstance = new Sfml();
             }
             return s_pInstance;
         }
@@ -29,18 +26,16 @@ class Sdl : public IModuleDisplay {
         void draw() override;
         void update(std::vector <GameElement> configs) override;
         void stop() override;
-        void drawSprite(SDL_infos info);
         void destroy() override;
-    
+
     private:
-        Sdl();
+        Sfml();
         TrackPack keyPressed;
-        SDL_Window *m_pWindow;
-        SDL_Renderer *m_pRenderer;
-        SDL_Event event;
-        std::vector<SDL_infos> images;
+        sf::RenderWindow window;
+        sf::Event event;
+        std::vector<std::pair<sf::Sprite *, sf::Texture *>> images;
         std::vector <GameElement> oldState;
-        static Sdl *s_pInstance;
+        static Sfml *s_pInstance;
 };
 
-#endif /* !SDL_HPP_ */
+#endif /* !SFML_HPP_ */
