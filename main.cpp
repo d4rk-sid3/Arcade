@@ -59,9 +59,11 @@ Core::~Core()
 
 void Core::destroyall()
 {
+    all_games[current_game]->destroy();
     for (int i = 0; i < all_games.size(); i++) {
         delete all_games[i];
     }
+    all_display[current_display]->destroy();
     for (int i = 0; i < all_display.size(); i++) {
         delete all_display[i];
     }
@@ -111,7 +113,7 @@ update_return Core::update(TrackPack keyCode)
 
 void Core::runGame(TrackPack keycode)
 {
-    try {
+    // try {
         all_games[current_game]->init(false);
         all_display[current_display]->init(all_games[current_game]->getGameState());
         int a = 0;
@@ -156,9 +158,9 @@ void Core::runGame(TrackPack keycode)
                 all_games[current_game]->init(false);
             }
         }
-    } catch (...) {
-        std::cerr << "eeeeeeeeeeeeeeeeeeeeeeeeeeee" << std::endl;
-    }
+    // } catch (...) {
+    //     std::cerr << "eeeeeeeeeeeeeeeeeeeeeeeeeeee" << std::endl;
+    // }
 }
 
 int main(void)

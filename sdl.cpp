@@ -28,26 +28,26 @@ void Sdl::handleInput()
         keyPressed =  LEFT;
     else if (keyboard[SDL_SCANCODE_RIGHT])
         keyPressed =  RIGHT;
-    else if (keyboard[SDLK_q]) {
+    else if (keyboard[SDL_SCANCODE_Q]) {
         keyPressed = QUIT;
         oldState.~vector();
         SDL_DestroyWindow(m_pWindow);
         SDL_DestroyRenderer(m_pRenderer);
         SDL_Quit();
     }
-    else if (keyboard[SDLK_l])
+    else if (keyboard[SDL_SCANCODE_L])
         keyPressed =  LIB_LEFT;
-    else if (keyboard[SDLK_r])
+    else if (keyboard[SDL_SCANCODE_R])
         keyPressed =  LIB_RIGHT;
-    else if (keyboard[SDLK_m])
+    else if (keyboard[SDL_SCANCODE_M])
         keyPressed =  MENU;
-    else if (keyboard[SDLK_u])
+    else if (keyboard[SDL_SCANCODE_U])
         keyPressed =  GAME_LEFT;
-    else if (keyboard[SDLK_d])
+    else if (keyboard[SDL_SCANCODE_D])
         keyPressed =  GAME_RIGHT;
-    else if (keyboard[SDLK_p])
+    else if (keyboard[SDL_SCANCODE_P])
         keyPressed = PAUSE;
-    else if (keyboard[SDLK_n])
+    else if (keyboard[SDL_SCANCODE_N])
         keyPressed =  RESTART;
     else
         keyPressed = NONE;
@@ -147,7 +147,7 @@ void Sdl::stop()
 
 void Sdl::destroy()
 {
-    oldState.~vector();
+    oldState.clear();
     for (int i = 0; i < images.size(); i++) {
         SDL_DestroyTexture(std::get<4>(images[i]));
     }

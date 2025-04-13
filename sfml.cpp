@@ -67,6 +67,7 @@ void Sfml::init(std::vector <GameElement> configs)
     for (int a = 0; a < configs.size(); a++) {
         oldState.push_back(configs[a]);
     }
+    images.clear();
     for (int i = 0; i < configs.size(); i++) {
         sf::Texture *texture = new sf::Texture;
         sf::Sprite *sprite = new sf::Sprite;
@@ -127,10 +128,11 @@ void Sfml::stop()
 
 void Sfml::destroy()
 {
-    oldState.~vector();
+    oldState.clear();
     window.close();
     for (int i = 0; i < images.size(); i++) {
         delete images[i].first;
         delete images[i].second;
     }
+    images.clear();
 }

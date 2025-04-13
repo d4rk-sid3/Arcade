@@ -18,8 +18,6 @@ Ncurses::Ncurses()
 
 Ncurses::~Ncurses()
 {
-    delwin(win);
-    endwin();
 }
 
 void Ncurses::init(std::vector <GameElement> configs)
@@ -123,7 +121,7 @@ void Ncurses::stop()
 }
 void Ncurses::destroy()
 {
-    oldState.~vector();
+    oldState.clear();
     delwin(win);
     endwin();
 }

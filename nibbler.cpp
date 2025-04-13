@@ -34,10 +34,6 @@ void Nibbler::createsavepath()
         outFile << "PREVIOUS=" << previous << std::endl;
         outFile << "HEAD_NIBBLER_X=" << nibbler[0].first << std::endl;
         outFile << "HEAD_NIBBLER_Y=" << nibbler[0].second << std::endl;
-        for (size_t i = 0; i < foods.size(); i++) {
-            outFile << "FOOD_X=" << foods[i].first << std::endl;
-            outFile << "FOOD_Y=" << foods[i].second << std::endl;
-        }
         outFile << "NB_FOOD=" << nb_fruit << std::endl;
         outFile << "SCORE=" << score << std::endl;
         outFile << "TIME=" << time << std::endl;
@@ -115,12 +111,6 @@ void Nibbler::init(bool _restart)
         if (key == "HEAD_NIBBLER_Y") {
             y = std::stoi(value);
         }
-        if (key == "FOOD_X") {
-            x_food = std::stoi(value);
-        }
-        if (key == "FOOD_Y") {
-            y_food = std::stoi(value);
-        }
         if (key == "NB_FOOD") {
             nb_fruit = std::stoi(value);
         }
@@ -143,6 +133,8 @@ void Nibbler::init(bool _restart)
             }
         }
     }
+    x_food = 1;
+    y_food = 2;
     is_paused = false;
     nibbler.push_back({x, y});
     for (int i = 0; i < map.size(); i++) {
