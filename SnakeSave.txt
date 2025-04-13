@@ -1,16 +1,15 @@
 WIDTH=49
 HEIGHT=31
 DIRECTION=RIGHT
-HEAD_SNAKE_X=20
-HEAD_SNAKE_Y=14
-FOOD_X=15
-FOOD_Y=1
+HEAD_SNAKE_X=46
+HEAD_SNAKE_Y=19
+FOOD_X=45
+FOOD_Y=16
 SCORE=0
-TIME=120
-IS_ENDED=254
+TIME=150
+IS_ENDED=0
 MAP=
 ################################################
-#              X                               #
 #                                              #
 #                                              #
 #                                              #
@@ -23,12 +22,13 @@ MAP=
 #                                              #
 #                                              #
 #                                              #
-#                BBBO                          #
 #                                              #
 #                                              #
 #                                              #
+#                                            X #
 #                                              #
 #                                              #
+#                                             O#
 #                                              #
 #                                              #
 #                                              #
