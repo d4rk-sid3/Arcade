@@ -7,15 +7,10 @@
 
 #include "sdl.hpp"
 
+Sdl* Sdl::s_pInstance = 0;
+
 Sdl::Sdl()
 {
-    if(SDL_Init(SDL_INIT_EVERYTHING) == 0)
-    {
-        m_pWindow = SDL_CreateWindow("Nibbler", 0, 0, 1920, 1080, 0);
-        m_pRenderer = SDL_CreateRenderer(m_pWindow, -1, 0);
-        SDL_SetRenderDrawColor(m_pRenderer, 0, 0, 0, 0);
-    }
-    return;
 }
 
 void Sdl::handleInput()
@@ -27,16 +22,35 @@ void Sdl::handleInput()
 
     if (keyboard[SDL_SCANCODE_UP])
         keyPressed =  UP;
-    if (keyboard[SDL_SCANCODE_DOWN])
+    else if (keyboard[SDL_SCANCODE_DOWN])
         keyPressed =  DOWN;
-    if (keyboard[SDL_SCANCODE_LEFT])
+    else if (keyboard[SDL_SCANCODE_LEFT])
         keyPressed =  LEFT;
-    if (keyboard[SDL_SCANCODE_RIGHT])
+    else if (keyboard[SDL_SCANCODE_RIGHT])
         keyPressed =  RIGHT;
-    //Tu dois checker ici si 'Q' a été appuyé
-    // if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q)) {
-    //     window.close();
-    // }
+    else if (keyboard[SDLK_q]) {
+        keyPressed = QUIT;
+        oldState.~vector();
+        SDL_DestroyWindow(m_pWindow);
+        SDL_DestroyRenderer(m_pRenderer);
+        SDL_Quit();
+    }
+    else if (keyboard[SDLK_l])
+        keyPressed =  LIB_LEFT;
+    else if (keyboard[SDLK_r])
+        keyPressed =  LIB_RIGHT;
+    else if (keyboard[SDLK_m])
+        keyPressed =  MENU;
+    else if (keyboard[SDLK_u])
+        keyPressed =  GAME_LEFT;
+    else if (keyboard[SDLK_d])
+        keyPressed =  GAME_RIGHT;
+    else if (keyboard[SDLK_p])
+        keyPressed = PAUSE;
+    else if (keyboard[SDLK_n])
+        keyPressed =  RESTART;
+    else
+        keyPressed = NONE;
 }
 
 TrackPack Sdl::getEvent()
@@ -46,6 +60,12 @@ TrackPack Sdl::getEvent()
 
 void Sdl::init(std::vector <GameElement> configs)
 {
+    if(SDL_Init(SDL_INIT_EVERYTHING) == 0)
+    {
+        m_pWindow = SDL_CreateWindow("Nibbler", 0, 0, 1920, 1080, 0);
+        m_pRenderer = SDL_CreateRenderer(m_pWindow, -1, 0);
+        SDL_SetRenderDrawColor(m_pRenderer, 0, 0, 0, 0);
+    }
     keyPressed = NONE;
     oldState.clear();
     for (int a = 0; a < configs.size(); a++) {
@@ -58,8 +78,6 @@ void Sdl::init(std::vector <GameElement> configs)
         SDL_Surface* pTempSurface = IMG_Load(configs[i].getSprite().c_str());
         SDL_Texture* pTexture = SDL_CreateTextureFromSurface(m_pRenderer, pTempSurface);
         SDL_FreeSurface(pTempSurface);
-        //std::cout << "X = " << posX << std::endl;
-        //std::cout << "Y = " << posY << std::endl;
         images.push_back(std::make_tuple(posX * size, posY * size, size, size, pTexture));
     }
 }
@@ -82,13 +100,11 @@ void Sdl::drawSprite(SDL_infos info)
 }
 void Sdl::draw()
 {
-    //m_pWindow.setFramerateLimit(10);
-    // SDL_Delay(20);
     handleInput();
     SDL_RenderClear(m_pRenderer);
     for (int i = 0; i < images.size(); i++)
         drawSprite(images[i]);
-    SDL_RenderPresent(m_pRenderer); // draw to the screen
+    SDL_RenderPresent(m_pRenderer);
 }
 
 void Sdl::update(std::vector<GameElement> configs)
@@ -127,4 +143,15 @@ void Sdl::stop()
         }
     }
     return;
+}
+
+void Sdl::destroy()
+{
+    oldState.~vector();
+    for (int i = 0; i < images.size(); i++) {
+        SDL_DestroyTexture(std::get<4>(images[i]));
+    }
+    SDL_DestroyWindow(m_pWindow);
+    SDL_DestroyRenderer(m_pRenderer);
+    SDL_Quit();
 }

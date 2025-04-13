@@ -13,21 +13,29 @@
 
 class Ncurses : public IModuleDisplay {
     public:
-        Ncurses();
-        ~Ncurses();
-        void init(std::vector <GameElement> configs) override;
-        void handleInput() override;
-        TrackPack getEvent() override;
-        void draw() override;
-        void update(std::vector <GameElement> configs) override;
-        void stop() override;
-
+    ~Ncurses();
+    static Ncurses* getInstance() {
+        if (s_pInstance == nullptr) {
+            s_pInstance = new Ncurses();
+        }
+        return s_pInstance;
+    }
+    void init(std::vector <GameElement> configs) override;
+    void handleInput() override;
+    TrackPack getEvent() override;
+    void draw() override;
+    void update(std::vector <GameElement> configs) override;
+    void stop() override;
+    void destroy() override;
+    
     protected:
     private:
+        Ncurses();
         std::vector <GameElement> oldState;
         TrackPack keyPressed;
         std::string map;
         WINDOW *win;
+        static Ncurses *s_pInstance;
 };
 
 #endif /* !NCURES_HPP_ */

@@ -22,7 +22,7 @@ class Snake : public IGameModule {
     public:
         Snake();
         ~Snake();
-        void init() override;
+        void init(bool _restart) override;
         void update() override;
         void eatfood();
         bool isGameOver() const;
@@ -32,6 +32,8 @@ class Snake : public IGameModule {
         void createElement();
         void createsavepath();
         bool check_xin();
+        void setpaused() override;
+        void destroy() override;
 
     private:
         std::vector<std::string> map;
@@ -48,6 +50,8 @@ class Snake : public IGameModule {
         int time;
         const std::string filepath = "SnakeConfig.txt";
         const std::string savefilepath = "SnakeSave.txt";
+        bool is_paused;
+        bool is_restart;
 };
 
 #endif /* !SNAKE_HPP_ */

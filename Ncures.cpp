@@ -10,6 +10,8 @@
 #include <fstream>
 #include <thread>
 
+Ncurses* Ncurses::s_pInstance = 0;
+
 Ncurses::Ncurses()
 {
 }
@@ -79,14 +81,36 @@ void Ncurses::handleInput()
             case KEY_RIGHT:
                 keyPressed = RIGHT;
                 break;
+            case 'l':
+                keyPressed = LIB_LEFT;
+                break;
+            case 'r':
+                keyPressed = LIB_RIGHT;
+                break;
+            case 'm':
+                keyPressed = MENU;
+                break;
+            case 'u':
+                keyPressed = GAME_LEFT;
+                break;
+            case 'd':
+                keyPressed = GAME_RIGHT;
+                break;
+            case 'p':
+                keyPressed = PAUSE;
+                break;
+            case 'n':
+                keyPressed = RESTART;
+                break;
             case 'q':
                 keyPressed = QUIT;
+                delwin(win);
+                endwin();
                 break;
             default:
                 break;
         }
     }
-    // std::this_thread::sleep_for(std::chrono::milliseconds(100));
 }
 
 TrackPack Ncurses::getEvent()
@@ -96,4 +120,10 @@ TrackPack Ncurses::getEvent()
 
 void Ncurses::stop()
 {
+}
+void Ncurses::destroy()
+{
+    oldState.~vector();
+    delwin(win);
+    endwin();
 }

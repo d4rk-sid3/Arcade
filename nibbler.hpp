@@ -22,7 +22,7 @@ class Nibbler : public IGameModule {
     public:
         Nibbler();
         ~Nibbler();
-        void init() override;
+        void init(bool _restart) override;
         void update() override;
         void eatfood();
         bool isGameOver() const;
@@ -32,6 +32,8 @@ class Nibbler : public IGameModule {
         int getScore() const;
         void createsavepath();
         bool check_xin();
+        void setpaused() override;
+        void destroy() override;
  
     private:
         std::vector<std::string> map;
@@ -53,6 +55,8 @@ class Nibbler : public IGameModule {
         const std::string filepath = "NibblerConfig.txt";
         const std::string savefilepath = "NibblerSave.txt";
         TrackPack previous;
+        bool is_paused;
+        bool is_restart;
         
 };
 #endif /* !nibbler_HPP_ */

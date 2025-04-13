@@ -13,20 +13,29 @@
 
 class Sfml : public IModuleDisplay {
     public:
-        Sfml();
         ~Sfml();
+        static Sfml* getInstance() {
+            if (s_pInstance == nullptr) {
+                s_pInstance = new Sfml();
+            }
+            return s_pInstance;
+        }
         void init(std::vector <GameElement> configs) override;
         void handleInput() override;
         TrackPack getEvent() override;
         void draw() override;
         void update(std::vector <GameElement> configs) override;
         void stop() override;
+        void destroy() override;
+
     private:
+        Sfml();
         TrackPack keyPressed;
         sf::RenderWindow window;
         sf::Event event;
         std::vector<std::pair<sf::Sprite *, sf::Texture *>> images;
         std::vector <GameElement> oldState;
+        static Sfml *s_pInstance;
 };
 
 #endif /* !SFML_HPP_ */

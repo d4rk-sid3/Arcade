@@ -1,13 +1,13 @@
 WIDTH=49
 HEIGHT=31
 DIRECTION=RIGHT
-HEAD_SNAKE_X=39
-HEAD_SNAKE_Y=17
-FOOD_X=44
-FOOD_Y=28
+HEAD_SNAKE_X=46
+HEAD_SNAKE_Y=19
+FOOD_X=45
+FOOD_Y=16
 SCORE=0
 TIME=150
-IS_ENDED=254
+IS_ENDED=0
 MAP=
 ################################################
 #                                              #
@@ -16,7 +16,6 @@ MAP=
 #                                              #
 #                                              #
 #                                              #
-#                                  X           #
 #                                              #
 #                                              #
 #                                              #
@@ -26,7 +25,10 @@ MAP=
 #                                              #
 #                                              #
 #                                              #
-#                                      O       #
+#                                            X #
+#                                              #
+#                                              #
+#                                             O#
 #                                              #
 #                                              #
 #                                              #
@@ -36,6 +38,4 @@ MAP=
 #                                              #
 #                                              #
 #                                              #
-#                                              #
-#                                           X  #
 ################################################
