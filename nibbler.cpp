@@ -34,8 +34,10 @@ void Nibbler::createsavepath()
         outFile << "PREVIOUS=" << previous << std::endl;
         outFile << "HEAD_NIBBLER_X=" << nibbler[0].first << std::endl;
         outFile << "HEAD_NIBBLER_Y=" << nibbler[0].second << std::endl;
-        outFile << "FOOD_X=" << x_food << std::endl;
-        outFile << "FOOD_Y=" << y_food << std::endl;
+        for (size_t i = 0; i < foods.size(); i++) {
+            outFile << "FOOD_X=" << foods[i].first << std::endl;
+            outFile << "FOOD_Y=" << foods[i].second << std::endl;
+        }
         outFile << "NB_FOOD=" << nb_fruit << std::endl;
         outFile << "SCORE=" << score << std::endl;
         outFile << "TIME=" << time << std::endl;
@@ -150,20 +152,25 @@ void Nibbler::init(bool _restart)
             }
         }
     }
-    createElement();
     if (!check_xin())
         eatfood();
+    createElement();
 }
 
 bool Nibbler::check_xin()
 {
+    bool hasFood = false;
+    foods.clear();
+    
     for (int i = 0; i < map.size(); i++) {
         for (int j = 0; j < map[i].size(); j++) {
-            if (map[i][j] == 'X')
-                return true;
+            if (map[i][j] == 'X') {
+                foods.push_back({j, i});
+                hasFood = true;
+            }
         }
     }
-    return false;
+    return hasFood;
 }
 
 void Nibbler::eatfood()
@@ -209,7 +216,6 @@ void Nibbler::handleInput(TrackPack keyCode)
         direction = previous;
         return;
     }
-
     if ((direction == UP && keyCode != DOWN) ||   
         (direction == DOWN && keyCode != UP) ||   
         (direction == LEFT && keyCode != RIGHT) ||   
@@ -217,6 +223,7 @@ void Nibbler::handleInput(TrackPack keyCode)
         previous = direction;
         direction = keyCode;  
     }
+
 }
 
 void Nibbler::update()
