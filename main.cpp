@@ -114,11 +114,12 @@ update_return Core::update(TrackPack keyCode)
 void Core::runGame(TrackPack keycode)
 {
     // try {
-        all_games[current_game]->init(false);
+        bool isquited = false;
+        all_games[current_game]->init(SAVE);
         all_display[current_display]->init(all_games[current_game]->getGameState());
         int a = 0;
 
-        while (!all_games[current_game]->isGameOver()) {
+        while (!isquited) {
             all_display[current_display]->handleInput();
             keycode = all_display[current_display]->getEvent();
             update_return check;
@@ -139,6 +140,7 @@ void Core::runGame(TrackPack keycode)
                 all_display[current_display]->init(all_games[current_game]->getGameState());
             }
             if (check == QUITALL) {
+                isquited = true;
                 break;
             }
             if (check == CONFIG) {
@@ -147,7 +149,7 @@ void Core::runGame(TrackPack keycode)
                 }
                 if (keycode == RESTART) {
                     all_games[current_game]->destroy();
-                    all_games[current_game]->init(true);
+                    all_games[current_game]->init(REST);
                 }
             }
             if (check == GAME) {
@@ -155,7 +157,11 @@ void Core::runGame(TrackPack keycode)
                     current_game = 1;
                 else if (current_game > 1)
                     current_game = 0;
-                all_games[current_game]->init(false);
+                all_games[current_game]->init(SAVE);
+            }
+            if (all_games[current_game]->isGameOver()) {
+                all_games[current_game]->destroy();
+                all_games[current_game]->init(OVER);
             }
         }
     // } catch (...) {
@@ -167,7 +173,7 @@ int main(void)
 {
    std::vector<IModuleDisplay *> tmpDisp = {Sfml::getInstance(), Ncurses::getInstance(), Sdl::getInstance()};
    std::vector<IGameModule *> tmpGame = {new Snake, new Nibbler};
-   Core core(tmpGame, tmpDisp, 1, 0);
+   Core core(tmpGame, tmpDisp, 0, 0);
    TrackPack keycode = NONE;
 
     core.runGame(keycode);

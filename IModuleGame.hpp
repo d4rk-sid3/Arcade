@@ -33,6 +33,12 @@
 #include <ctime>
 
 
+enum state {
+    REST,
+    SAVE,
+    OVER
+};
+
 class IGameModule {
     public:
         /**
@@ -47,7 +53,7 @@ class IGameModule {
          * 
          * Créer les élémnts nécessaires à la réalisation du jeu
          */
-        virtual void init(bool _restart) = 0;
+        virtual void init(state check) = 0;
 
         /**
          * @brief Mise à jour des objets du jeu
