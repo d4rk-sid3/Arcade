@@ -48,19 +48,24 @@ void Nibbler::createsavepath()
     }
 }
 
-void Nibbler::init(bool _restart)
+void Nibbler::init(state check)
 {
     std::string filetoopen;
      
-    std::ifstream outFile(savefilepath);
-    if (outFile.is_open()) {
-        filetoopen = savefilepath;
-        outFile.close();
-    } else {
+    if (check == SAVE) {
+        std::ifstream outFile(savefilepath);
+        if (outFile.is_open()) {
+            filetoopen = savefilepath;
+            outFile.close();
+        } else {
+            filetoopen = filepath;
+        }
+    }
+    if (check == REST) {
         filetoopen = filepath;
     }
-    if (_restart == true) {
-        filetoopen = filepath;
+    if (check == OVER) {
+        filetoopen = overfilepath;
     }
     std::ifstream file(filetoopen);  
     if (!file) {  
@@ -77,75 +82,86 @@ void Nibbler::init(bool _restart)
         std::string value;
         std::getline(l, key, '=');
         std::getline(l, value, '=');
-        if (key == "WIDTH") {
-            width = std::stoi(value);
-        }
-        if (key == "HEIGHT") {
-            height = std::stoi(value);
-        }
-        if (key == "DIRECTION") {
-            if (value == "DOWN") {
-                direction = DOWN;
-            } else if (value == "UP") {
-                direction = UP;
-            } else if (value == "LEFT") {
-                direction = LEFT;
-            } else if (value == "RIGHT") {
-                direction = RIGHT;
+        if (check == SAVE || check == REST) {    
+            if (key == "WIDTH") {
+                width = std::stoi(value);
+            }
+            if (key == "HEIGHT") {
+                height = std::stoi(value);
+            }
+            if (key == "DIRECTION") {
+                if (value == "DOWN") {
+                    direction = DOWN;
+                } else if (value == "UP") {
+                    direction = UP;
+                } else if (value == "LEFT") {
+                    direction = LEFT;
+                } else if (value == "RIGHT") {
+                    direction = RIGHT;
+                }
+            }
+            if (key == "PREVIOUS") {
+                if (value == "DOWN") {
+                    previous = DOWN;
+                } else if (value == "UP") {
+                    previous = UP;
+                } else if (value == "LEFT") {
+                    previous = LEFT;
+                } else if (value == "RIGHT") {
+                    previous = RIGHT;
+                }
+            }
+            if (key == "HEAD_NIBBLER_X") {
+                x = std::stoi(value);
+            }
+            if (key == "HEAD_NIBBLER_Y") {
+                y = std::stoi(value);
+            }
+            if (key == "NB_FOOD") {
+                nb_fruit = std::stoi(value);
+            }
+            if (key == "SCORE") {
+                score = std::stoi(value);
+            }
+            if (key == "TIME") {
+                time = std::stoi(value);
+            }
+            if (key == "IS_ENDED") {
+                if (value == "FALSE") {
+                    is_ended = false;
+                } else if (value == "TRUE") {
+                    is_ended = true;
+                }
+            }
+            if (key == "MAP") {
+                while (std::getline(file, map_line)) {
+                    map.push_back(map_line);
+                }
             }
         }
-        if (key == "PREVIOUS") {
-            if (value == "DOWN") {
-                previous = DOWN;
-            } else if (value == "UP") {
-                previous = UP;
-            } else if (value == "LEFT") {
-                previous = LEFT;
-            } else if (value == "RIGHT") {
-                previous = RIGHT;
-            }
-        }
-        if (key == "HEAD_NIBBLER_X") {
-            x = std::stoi(value);
-        }
-        if (key == "HEAD_NIBBLER_Y") {
-            y = std::stoi(value);
-        }
-        if (key == "NB_FOOD") {
-            nb_fruit = std::stoi(value);
-        }
-        if (key == "SCORE") {
-            score = std::stoi(value);
-        }
-        if (key == "TIME") {
-            time = std::stoi(value);
-        }
-        if (key == "IS_ENDED") {
-            if (value == "FALSE") {
-                is_ended = false;
-            } else if (value == "TRUE") {
-                is_ended = true;
-            }
-        }
-        if (key == "MAP") {
-            while (std::getline(file, map_line)) {
-                map.push_back(map_line);
+        if (check == OVER) {
+            if (key == "MAP") {
+                while (std::getline(file, map_line)) {
+                    map.push_back(map_line);
+                }
             }
         }
     }
-    x_food = 1;
-    y_food = 2;
-    is_paused = false;
-    nibbler.push_back({x, y});
-    for (int i = 0; i < map.size(); i++) {
-        for (int j = 0; j < map[i].size(); j++) {
-            if (map[i][j] == 'B') {
-                nibbler.push_back({j, i});
+    if (check == SAVE || check == REST) {
+        x_food = 1;
+        y_food = 2;
+        is_paused = false;
+        nibbler.push_back({x, y});
+        for (int i = 0; i < map.size(); i++) {
+            for (int j = 0; j < map[i].size(); j++) {
+                if (map[i][j] == 'B') {
+                    nibbler.push_back({j, i});
+                }
             }
         }
+        if (!check_xin())
+            eatfood();
     }
-    if (!check_xin())
-        eatfood();
     createElement();
 }
 

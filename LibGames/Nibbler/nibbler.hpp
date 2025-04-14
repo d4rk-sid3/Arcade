@@ -22,7 +22,7 @@ class Nibbler : public IGameModule {
     public:
         Nibbler();
         ~Nibbler();
-        void init(bool _restart) override;
+        void init(state check) override;
         void update() override;
         void eatfood();
         bool isGameOver() const;
@@ -54,6 +54,7 @@ class Nibbler : public IGameModule {
         double duration;
         const std::string filepath = "NibblerConfig.txt";
         const std::string savefilepath = "NibblerSave.txt";
+        const std::string overfilepath = "gameover.txt";
         TrackPack previous;
         bool is_paused;
         bool is_restart;

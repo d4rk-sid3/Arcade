@@ -22,7 +22,7 @@ class Snake : public IGameModule {
     public:
         Snake();
         ~Snake();
-        void init(bool _restart) override;
+        void init(state check) override;
         void update() override;
         void eatfood();
         bool isGameOver() const;
@@ -50,6 +50,7 @@ class Snake : public IGameModule {
         int time;
         const std::string filepath = "SnakeConfig.txt";
         const std::string savefilepath = "SnakeSave.txt";
+        const std::string overfilepath = "gameover.txt";
         bool is_paused;
         bool is_restart;
 };
