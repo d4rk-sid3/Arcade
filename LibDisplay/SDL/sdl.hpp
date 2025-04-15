@@ -17,6 +17,7 @@ using SDL_infos = std::tuple<int, int, int, int, SDL_Texture*>;
 class Sdl : public IModuleDisplay {
     public:
         ~Sdl();
+        Sdl();
         static Sdl* getInstance() {
             if (s_pInstance == nullptr) {
                 s_pInstance = new Sdl();
@@ -33,7 +34,6 @@ class Sdl : public IModuleDisplay {
         void destroy() override;
     
     private:
-        Sdl();
         TrackPack keyPressed;
         SDL_Window *m_pWindow;
         SDL_Renderer *m_pRenderer;

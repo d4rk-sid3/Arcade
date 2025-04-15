@@ -10,6 +10,7 @@
 #include "LibDisplay/SDL/sdl.hpp"
 #include "LibDisplay/SFML/sfml.hpp"
 #include "LibGames/Snake/Snake.hpp"
+#include "loader.hpp"
 
 enum update_return
 {
@@ -169,12 +170,52 @@ void Core::runGame(TrackPack keycode)
     // }
 }
 
-int main(void)
+int handle_error(int ac, char **av)
 {
-   std::vector<IModuleDisplay *> tmpDisp = {Sfml::getInstance(), Ncurses::getInstance(), Sdl::getInstance()};
-   std::vector<IGameModule *> tmpGame = {new Snake, new Nibbler};
-   Core core(tmpGame, tmpDisp, 0, 0);
-   TrackPack keycode = NONE;
+    const std::vector <std::string> tab = {"arcade_ndk++.so", "arcade_aalib.so", "arcade_libcaca.so",
+        "arcade_allegro5.so", "arcade_xlib.so", "arcade_gtk+.so", "arcade_sfml.so",
+        "arcade_irrlicht.so", "arcade_opengl.so", "arcade_vulkan.so", "arcade_qt5.so"};
+
+    if (ac != 2) {
+        return 84;
+    }
+
+    std::ifstream flux(av[1]);
+
+    if (flux.is_open()) {
+        std::cout << "Le fichier existe !" << std::endl;
+        flux.close();
+    } else
+        return 84;
+
+    int i = 0;
+
+    for (i; i < tab.size(); i++) {
+        if (av[1] == tab[i])
+            break;
+    }
+    if (i == tab.size())
+        return 84;
+    
+    return 1;
+}
+
+int main(int ac, char **av)
+{
+    DLLoader<Ncurses> ncurses("./lib_ncurses.so");
+    DLLoader<Sfml> sfml("./lib_sfml.so");
+    DLLoader<Sdl> sdl("./lib_sdl.so");
+    DLLoader<Snake> snake("./lib_snake.so");
+    DLLoader<Nibbler> nibbler("./lib_nibbler.so");
+
+    if (handle_error(ac, av) == 84)
+        return 84;
+
+    std::vector<IModuleDisplay *> tmpDisp = {sfml.getInstance(), ncurses.getInstance(), sdl.getInstance()};
+    std::vector<IGameModule *> tmpGame = {snake.getInstance(), nibbler.getInstance()};
+
+    Core core(tmpGame, tmpDisp, 0, 0);
+    TrackPack keycode = NONE;
 
     core.runGame(keycode);
 }

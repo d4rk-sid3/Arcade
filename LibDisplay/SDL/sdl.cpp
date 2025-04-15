@@ -155,3 +155,11 @@ void Sdl::destroy()
     SDL_DestroyRenderer(m_pRenderer);
     SDL_Quit();
 }
+
+extern "C" IModuleDisplay* createInstance() {
+    return new Sdl();
+}
+
+extern "C" void destroyInstance(IModuleDisplay *instance) {
+    delete instance;
+}
