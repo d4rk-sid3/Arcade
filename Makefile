@@ -13,7 +13,7 @@ NCURSES_FLAGS = -lncurses
 SDL_FLAGS = -lSDL2 -lSDL2_image
 
 
-LIB_SDL = arcade_sdl.so
+LIB_SDL = arcade_sdl2.so
 LIB_SFML = arcade_sfml.so
 LIB_NCURSES = arcade_ncurses.so
 LIB_SNAKE = arcade_snake.so
@@ -36,7 +36,7 @@ OBJ_SNAKE = $(SRC_SNAKE:.cpp=.o)
 OBJ_NIBBLER = $(SRC_NIBBLER:.cpp=.o)
 OBJ_CORE = $(SRC_CORE:.cpp=.o)
 
-all: $(CORE)
+all: games graphicals core
 
 ncurses: $(LIB_NCURSES)
 

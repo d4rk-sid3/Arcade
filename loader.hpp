@@ -29,6 +29,7 @@ public:
         auto createInstance = (CreateInstanceFunc*) dlsym(handle, "createInstance");
         if (!createInstance) {
             throw std::runtime_error("Failed to load symbol: " + std::string(dlerror()));
+            std::cout << "L" << std::endl;
         }
         instance = createInstance();
     }
