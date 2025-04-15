@@ -13,6 +13,108 @@ Sdl::Sdl()
 {
 }
 
+void Sdl::init_menu()
+{
+    if(SDL_Init(SDL_INIT_EVERYTHING) == 0)
+    {
+        m_pWindow = SDL_CreateWindow("Menu", 0, 0, 1920, 1080, 0);
+        m_pRenderer = SDL_CreateRenderer(m_pWindow, -1, 0);
+        SDL_SetRenderDrawColor(m_pRenderer,0,0,0,0);
+    }
+    TTF_Init();
+    TextureManager::Instance()->load("assets/background.jpeg", "background", m_pRenderer);
+    TextureManager::Instance()->load("assets/borne.png", "borne", m_pRenderer);
+    TextureManager::Instance()->load("assets/player.png", "player", m_pRenderer);
+    TextureManager::Instance()->load("assets/Untitled1.png", "message", m_pRenderer);
+}
+
+void Sdl::update_menu()
+{
+    if (Menu::Instance()->isFinished()) {
+        current_a = Menu::Instance()->getGameIndex();
+        current_b = Menu::Instance()->getLibIndex();
+        //std::cout << "a" << current_a << std::endl;
+        //std::cout << "b" << current_b << std::endl;
+        keyPressed = QUIT;
+        return;
+    }
+    if (Player::Instance()->getFocus() == Focus::MENU) {
+        Menu::Instance()->update(0);
+        return;
+    }
+    if (Player::Instance()->getFocus() == Focus::PLAYER) {
+        Player::Instance()->update(0);
+        return;
+    }
+    Player::Instance()->update_name(0);
+    Player::Instance()->adjust_letters_position();
+}
+
+void Sdl::draw_menu()
+{
+    SDL_RenderClear(m_pRenderer);
+    if (Player::Instance()->getFocus() == Focus::MENU) {
+        Menu::Instance()->render(m_pRenderer);
+        SDL_RenderPresent(m_pRenderer); // draw to the screen
+        return;
+    }
+    if (Player::Instance()->getFocus() == Focus::PLAYER) {
+        TextureManager::Instance()->draw("background", 0, 0, 1920, 1080, 1.0, m_pRenderer);
+        TextureManager::Instance()->draw("borne", 300, 80, 500, 500, 1.0, m_pRenderer);
+        Player::Instance()->draw(m_pRenderer);
+        if (Player::Instance()->getBool())
+            TextureManager::Instance()->draw("message", 748, 10, 594, 533, 0.7, m_pRenderer);
+        SDL_RenderPresent(m_pRenderer); // draw to the screen
+        return;
+    }
+    Player::Instance()->display_letters(m_pRenderer);
+    Player::Instance()->adjust_letters_position();
+    SDL_RenderPresent(m_pRenderer); // draw to the screen
+    return;
+}
+
+void Sdl::handleInput(int value)
+{
+    keyPressed = NONE;
+    stop_menu();
+    SDL_Event ev = Sdl::getInstance()->getEvents();
+    if (ev.type == SDL_KEYDOWN) {
+        if(ev.key.keysym.scancode == SDL_SCANCODE_LEFT)
+            keyPressed = LEFT;
+        else if(ev.key.keysym.scancode == SDL_SCANCODE_RIGHT)
+            keyPressed = RIGHT;
+        else if(ev.key.keysym.scancode == SDL_SCANCODE_UP)
+            keyPressed = UP;
+        else if(ev.key.keysym.scancode == SDL_SCANCODE_DOWN)
+            keyPressed = DOWN;
+        else if(ev.key.keysym.scancode == SDL_SCANCODE_RETURN)
+            keyPressed = ENTER;;
+        SDL_Scancode tab[] = {SDL_SCANCODE_A, SDL_SCANCODE_B, SDL_SCANCODE_C, SDL_SCANCODE_D,
+            SDL_SCANCODE_E, SDL_SCANCODE_F, SDL_SCANCODE_G, SDL_SCANCODE_H,
+            SDL_SCANCODE_I, SDL_SCANCODE_J, SDL_SCANCODE_K, SDL_SCANCODE_L,
+            SDL_SCANCODE_M, SDL_SCANCODE_N, SDL_SCANCODE_O, SDL_SCANCODE_P,
+            SDL_SCANCODE_Q, SDL_SCANCODE_R, SDL_SCANCODE_S, SDL_SCANCODE_T,
+            SDL_SCANCODE_U, SDL_SCANCODE_V, SDL_SCANCODE_W, SDL_SCANCODE_X,
+            SDL_SCANCODE_Y, SDL_SCANCODE_Z, SDL_SCANCODE_BACKSPACE
+        };
+        const TrackPack tabs[27] = {TrackPack::A, TrackPack::B, TrackPack::C, TrackPack::D,
+            TrackPack::E, TrackPack::F, TrackPack::G, TrackPack::H,
+            TrackPack::I, TrackPack::J, TrackPack::K, TrackPack::L,
+            TrackPack::M, TrackPack::N, TrackPack::O, TrackPack::P,
+            TrackPack::Q, TrackPack::R, TrackPack::S, TrackPack::T,
+            TrackPack::U, TrackPack::V, TrackPack::W, TrackPack::X,
+            TrackPack::Y, TrackPack::Z, TrackPack::BACKSPACE
+        };
+        for (int i = 0; i < 26; i++) {
+            if (ev.key.keysym.scancode == tab[i]) {
+                keyPressed = tabs[i];
+                return;
+            }
+        }
+    }
+    return; 
+}
+
 void Sdl::handleInput()
 {   
     keyPressed = NONE;
@@ -22,6 +124,8 @@ void Sdl::handleInput()
 
     if (keyboard[SDL_SCANCODE_UP])
         keyPressed =  UP;
+    else if (keyboard[SDL_SCANCODE_RETURN])
+        keyPressed = ENTER;
     else if (keyboard[SDL_SCANCODE_DOWN])
         keyPressed =  DOWN;
     else if (keyboard[SDL_SCANCODE_LEFT])
@@ -98,6 +202,7 @@ void Sdl::drawSprite(SDL_infos info)
     SDL_RenderCopyEx(m_pRenderer, std::get<4>(info), &srcRect,
     &destRect, 0, 0, SDL_FLIP_NONE);
 }
+
 void Sdl::draw()
 {
     handleInput();
@@ -132,6 +237,18 @@ Sdl::~Sdl()
 {
 }
 
+void Sdl::stop_menu()
+{
+    if(SDL_PollEvent(&event)) {
+        if (event.type == SDL_QUIT) {
+            SDL_DestroyWindow(m_pWindow);
+            SDL_DestroyRenderer(m_pRenderer);
+            SDL_Quit();
+        }
+    }
+    return;
+}
+
 void Sdl::stop()
 {
     if(SDL_PollEvent(&event)) {
@@ -142,6 +259,14 @@ void Sdl::stop()
             SDL_Quit();
         }
     }
+    return;
+}
+
+void Sdl::clean()
+{
+    SDL_DestroyWindow(m_pWindow);
+    SDL_DestroyRenderer(m_pRenderer);
+    SDL_Quit();
     return;
 }
 
@@ -156,10 +281,11 @@ void Sdl::destroy()
     SDL_Quit();
 }
 
+
 extern "C" IModuleDisplay* createInstance() {
-    return new Sdl();
+    return Sdl::getInstance();
 }
 
 extern "C" void destroyInstance(IModuleDisplay *instance) {
-    delete instance;
+    //delete instance;
 }

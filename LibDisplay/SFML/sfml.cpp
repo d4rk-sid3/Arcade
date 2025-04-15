@@ -6,11 +6,102 @@
 */
 
 #include "sfml.hpp"
+#include <set>
 
 Sfml* Sfml::s_pInstance = 0;
 
 Sfml::Sfml()
 {
+}
+
+void Sfml::init_menu()
+{
+    window.create(sf::VideoMode(1920, 1080), "Arcade", sf::Style::Titlebar | sf::Style::Resize | sf::Style::Close);
+    keyPressed = NONE;
+    TextureManager::Instance()->load("assets/background.jpeg", "background", &window);
+    TextureManager::Instance()->load("assets/borne.png", "borne", &window);
+    TextureManager::Instance()->load("assets/player.png", "player", &window);
+    TextureManager::Instance()->load("assets/Untitled1.png", "message", &window);
+    if (!font->loadFromFile("assets/ROMANS.ttf")) {
+        std::cerr << "LOL" << std::endl;
+    };
+    return;
+}
+
+void Sfml::update_menu()
+{
+    if (Menu::Instance()->isFinished()) {
+        keyPressed = QUIT;
+        return;
+    }
+    if (Player::Instance()->getFocus() == Focus::MENU) {
+        Menu::Instance()->update(1);
+        return;
+    }
+    if (Player::Instance()->getFocus() == Focus::PLAYER) {
+        Player::Instance()->update(1);
+        return;
+    }
+    Player::Instance()->update_name(1);
+    Player::Instance()->adjust_letters_position();   
+}
+
+void Sfml::draw_menu()
+{
+    window.clear();
+    if (Player::Instance()->getFocus() == Focus::MENU) {
+        Menu::Instance()->render(&window, font);
+        window.display(); // draw to the screen
+        return;
+    }
+    if (Player::Instance()->getFocus() == Focus::PLAYER) {
+        TextureManager::Instance()->draw("background", 0, 0, 1920, 1080, &window);
+        TextureManager::Instance()->draw("borne", 300, 80, 500, 500, &window);
+        Player::Instance()->draw(&window, font);
+        if (Player::Instance()->getBool())
+            TextureManager::Instance()->draw("message", 748, 10, 594, 533, &window);
+        window.setFramerateLimit(10);
+        window.display(); // draw to the screen
+        return;
+    }
+    Player::Instance()->display_letters(&window, font);
+    Player::Instance()->adjust_letters_position();
+    window.display(); // draw to the screen
+    return;
+}
+
+void Sfml::handleInput(int value)
+{
+    keyPressed = NONE;
+    stop();
+
+    const TrackPack tabs[27] = {TrackPack::A, TrackPack::B, TrackPack::C, TrackPack::D,
+        TrackPack::E, TrackPack::F, TrackPack::G, TrackPack::H,
+        TrackPack::I, TrackPack::J, TrackPack::K, TrackPack::L,
+        TrackPack::M, TrackPack::N, TrackPack::O, TrackPack::P,
+        TrackPack::Q, TrackPack::R, TrackPack::S, TrackPack::T,
+        TrackPack::U, TrackPack::V, TrackPack::W, TrackPack::X,
+        TrackPack::Y, TrackPack::Z, TrackPack::BACKSPACE
+    };
+    std::vector<sf::Keyboard::Key> tab = {sf::Keyboard::A, sf::Keyboard::B, sf::Keyboard::C, sf::Keyboard::D,
+        sf::Keyboard::E, sf::Keyboard::F, sf::Keyboard::G, sf::Keyboard::H,
+        sf::Keyboard::I, sf::Keyboard::J, sf::Keyboard::K, sf::Keyboard::L,
+        sf::Keyboard::M, sf::Keyboard::N, sf::Keyboard::O, sf::Keyboard::P,
+        sf::Keyboard::Q, sf::Keyboard::R, sf::Keyboard::S, sf::Keyboard::T,
+        sf::Keyboard::U, sf::Keyboard::V, sf::Keyboard::W, sf::Keyboard::X,
+        sf::Keyboard::Y, sf::Keyboard::Z, sf::Keyboard::BackSpace
+    };
+    if (event.type == sf::Event::KeyReleased) {
+        for (int i = 0; i < 26; i++) {
+            if (event.key.code == tab[i]) {
+                keyPressed = tabs[i];
+                return;
+            }
+        }
+    }
+    if (event.key.code == sf::Keyboard::Return)
+        keyPressed = ENTER;
+    return;
 }
 
 void Sfml::handleInput()
@@ -52,6 +143,12 @@ void Sfml::handleInput()
     } else {
         keyPressed = NONE;
     }
+}
+
+void Sfml::clean()
+{
+    window.close();
+    return;
 }
 
 TrackPack Sfml::getEvent()
@@ -138,9 +235,9 @@ void Sfml::destroy()
 }
 
 extern "C" IModuleDisplay* createInstance() {
-    return new Sfml();
+    return Sfml::getInstance();
 }
 
 extern "C" void destroyInstance(IModuleDisplay *instance) {
-    delete instance;
+    //delete instance;
 }

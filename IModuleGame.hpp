@@ -16,14 +16,6 @@
  * @date 25 Mars 2025
  */
 
-/**
- * @class IGameModule
- * @brief Une interface représentant un module de jeu
- * 
- * Cette classe représente l'ensemble des modules de jeu et fournit 
- * les méthodes communes à elles toutes pour pouvoir les utiliser
- */
-
 #ifndef IMODULEGAME_HPP_
 #define IMODULEGAME_HPP_
 
@@ -32,12 +24,24 @@
 #include "TrackPack.hpp"
 #include <ctime>
 
+/**
+ * @enum state
+ * @brief Describe the different kind of init
+ */
 
 enum state {
-    REST,
-    SAVE,
-    OVER
+    REST, //< When we want to restart
+    SAVE, //< When we want to start by a save
+    OVER //< When we want to display the over screen
 };
+
+/**
+ * @interface IGameModule
+ * @brief Une interface représentant un module de jeu
+ * 
+ * Cette classe représente l'ensemble des modules de jeu et fournit 
+ * les méthodes communes à elles toutes pour pouvoir les utiliser
+ */
 
 class IGameModule {
     public:
@@ -95,8 +99,16 @@ class IGameModule {
          */
         virtual bool isGameOver() const = 0;
 
+
+        /**
+         * @brief met le jeu en pause
+         */
         virtual void setpaused() = 0;
 
+
+        /**
+         * @brief Detruit les différentes vraibles inportantes du jeu
+         */
         virtual void destroy() = 0;
 };
 

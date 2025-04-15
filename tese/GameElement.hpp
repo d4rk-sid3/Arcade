@@ -5,6 +5,11 @@
 ** GameElement
 */
 
+
+#ifndef GAMEELEMENT_HPP_
+#define GAMEELEMENT_HPP_
+
+#include <string>
 /**
  * @class GameElement
  * @brief Une interface représentant un module de jeu
@@ -13,25 +18,46 @@
  * les méthodes communes à elles toutes pour pouvoir les utiliser
  */
 
-#ifndef GAMEELEMENT_HPP_
-#define GAMEELEMENT_HPP_
-
-#include <string>
-
 class GameElement {
     private:
-        std::string _value;
-        int _posx;
-        int _posy;
-        char _symbol;
-        int _size;
-        std::string _sprite;
+        std::string _value;     //< type de la valeur à stocker
+        int _posx;              //< position X de la valeur à stocker
+        int _posy;              //< position Y de la valeur à stocker
+        char _symbol;           //< symbol représenté par l'élément
+        int _size;              //< taille de l'élément à l'affichage
+        std::string _sprite;    //< chemin vers le sprite de l'élément
 
     public:
+        /**
+         * @brief Constructeur de GameElement
+         */
         GameElement();
+
+        /**
+         * @brief Destructeur de GameElement
+         */
         ~GameElement();
+
+
+        /**
+         * @brief permet de set la valeur à stocker
+         * 
+         * @param value std::string
+         */
         void setValue(std::string value);
+
+        /**
+         * @brief permet de set la valeur à stocker
+         * 
+         * @param value std::string
+         */
         void setPosX(int posx);
+
+        /**
+         * @brief permet de set la valeur à stocker
+         * 
+         * @param value std::string
+         */
         void setPosY(int posy);
         void setSymbol(char sym);
         void setSpriteSize(int size);
@@ -52,6 +78,5 @@ class GameElement {
             return this;
         }
 };
-extern int current_a;
-extern int current_b;
+
 #endif /* !GAMEELEMENT_HPP_ */

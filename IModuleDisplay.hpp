@@ -26,60 +26,66 @@
  * les méthodes communes à elles toutes pour pouvoir les utiliser
  */
 
-#ifndef IMODULEDISPLAY_HPP_
-#define IMODULEDISPLAY_HPP_
-#include <vector>
-#include <tuple>
-#include "TrackPack.hpp"
-#include "GameElement.hpp"
-
-class IModuleDisplay {
-    public:
-        /**
-        * @brief Destructeur par défaut.
-        * 
-        * Destructeur virtuel pour éviter les fuites mémoire
-        */
-        virtual ~IModuleDisplay() = default;
-
-        /**
-         * @brief Initialisation
+ #ifndef IMODULEDISPLAY_HPP_
+ #define IMODULEDISPLAY_HPP_
+ #include <vector>
+ #include <tuple>
+ #include "TrackPack.hpp"
+ #include "GameElement.hpp"
+ 
+ class IModuleDisplay {
+     public:
+         /**
+         * @brief Destructeur par défaut.
          * 
-         * Initialise les données de base du modules
+         * Destructeur virtuel pour éviter les fuites mémoire
          */
-        virtual void init(std::vector <GameElement> configs) = 0;
-
-        /**
-         * @brief Gestion des entrées utilisateur
-         * 
-         * Gère les entrées du clavier et de la souris
-         */
-        virtual void handleInput() = 0;
-    
-        /**
-         * @brief Renvoie les entrées utilisateur
-         * 
-         * @return l'enumèration TRackpack contenant l'entrée du l'utilisateur
-         */
-        virtual TrackPack getEvent() = 0;
-
-        virtual void update(std::vector <GameElement> configs) = 0;
-    
-        /**
-         * @brief Affichage
-         * 
-         * Gère l'affichage des assets
-         */
-        virtual void draw() = 0;
-
-        /**
-         * @brief Nettoyage à la fermeture
-         * 
-         * Détruit les assets et libère la mémoire
-         */
-        virtual void stop() = 0;
-
-        virtual void destroy() = 0;
-};
-
-#endif /* !IMODULEDISPLAY_HPP_ */
+         virtual ~IModuleDisplay() = default;
+ 
+         /**
+          * @brief Initialisation
+          * 
+          * Initialise les données de base du modules
+          */
+         virtual void init(std::vector <GameElement> configs) = 0;
+ 
+         /**
+          * @brief Gestion des entrées utilisateur
+          * 
+          * Gère les entrées du clavier et de la souris
+          */
+         virtual void handleInput() = 0;
+         virtual void handleInput(int value) = 0;
+         virtual void update_menu() = 0;
+         virtual void init_menu() = 0;
+         virtual void draw_menu() = 0;
+         virtual void clean() = 0;
+         virtual TrackPack getKeyPressed() = 0;
+     
+         /**
+          * @brief Renvoie les entrées utilisateur
+          * 
+          * @return l'enumèration TRackpack contenant l'entrée du l'utilisateur
+          */
+         virtual TrackPack getEvent() = 0;
+ 
+         virtual void update(std::vector <GameElement> configs) = 0;
+     
+         /**
+          * @brief Affichage
+          * 
+          * Gère l'affichage des assets
+          */
+         virtual void draw() = 0;
+ 
+         /**
+          * @brief Nettoyage à la fermeture
+          * 
+          * Détruit les assets et libère la mémoire
+          */
+         virtual void stop() = 0;
+ 
+         virtual void destroy() = 0;
+ };
+ 
+ #endif /* !IMODULEDISPLAY_HPP_ */

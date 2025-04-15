@@ -10,11 +10,11 @@
 #include "./../../IModuleDisplay.hpp"
 #include <SFML/Graphics.hpp>
 #include <iostream>
+#include "../SDL/sdl.hpp"
 
 class Sfml : public IModuleDisplay {
     public:
         ~Sfml();
-        Sfml();
         static Sfml* getInstance() {
             if (s_pInstance == nullptr) {
                 s_pInstance = new Sfml();
@@ -28,6 +28,12 @@ class Sfml : public IModuleDisplay {
         void update(std::vector <GameElement> configs) override;
         void stop() override;
         void destroy() override;
+        void clean();
+        void update_menu();
+        void draw_menu();
+        void handleInput(int value);
+        TrackPack getKeyPressed() override {return keyPressed;};
+        void init_menu();
 
     private:
         TrackPack keyPressed;
@@ -36,6 +42,8 @@ class Sfml : public IModuleDisplay {
         std::vector<std::pair<sf::Sprite *, sf::Texture *>> images;
         std::vector <GameElement> oldState;
         static Sfml *s_pInstance;
+        sf::Font *font = new sf::Font;
+        Sfml();
 };
 
 #endif /* !SFML_HPP_ */

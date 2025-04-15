@@ -10,7 +10,7 @@ CXXFLAGS = -Wall -Wextra -std=c++17 -I. -I./LibDisplay/SFML -I./LibDisplay/SDL -
 
 SFML_FLAGS = -lsfml-graphics -lsfml-window -lsfml-system
 NCURSES_FLAGS = -lncurses
-SDL_FLAGS = -lSDL2 -lSDL2_image
+SDL_FLAGS = -lSDL2 -lSDL2_image -lSDL2_ttf
 
 
 LIB_SDL = arcade_sdl2.so
@@ -19,12 +19,23 @@ LIB_NCURSES = arcade_ncurses.so
 LIB_SNAKE = arcade_snake.so
 LIB_NIBBLER = arcade_nibbler.so
 CORE = arcade
+LIB_MENU = arcade_menu.so
 
 SRC_CORE =        		main.cpp \
-                  		GameElement.cpp
+                  		GameElement.cpp\
+						Core.cpp\
+						Player.cpp\
+      					TextureManager.cpp\
+      					TextRenderer.cpp\
+						Menu.cpp\
 
-SRC_SFML =        		LibDisplay/SFML/sfml.cpp GameElement.cpp 
-SRC_SDL =         		LibDisplay/SDL/sdl.cpp GameElement.cpp
+SRC_MENU = 				Player.cpp\
+      					TextureManager.cpp\
+      					TextRenderer.cpp\
+      					Menu.cpp\
+
+SRC_SFML =        		LibDisplay/SFML/sfml.cpp GameElement.cpp Menu.cpp TextureManager.cpp TextRenderer.cpp Player.cpp
+SRC_SDL =         		LibDisplay/SDL/sdl.cpp GameElement.cpp Menu.cpp TextureManager.cpp TextRenderer.cpp Player.cpp
 SRC_NCURSES =     		LibDisplay/NCURSES/Ncures.cpp GameElement.cpp
 SRC_SNAKE =        		LibGames/Snake/Snake.cpp GameElement.cpp
 SRC_NIBBLER =         	LibGames/Nibbler/nibbler.cpp GameElement.cpp
@@ -35,6 +46,7 @@ OBJ_NCURSES = $(SRC_NCURSES:.cpp=.o)
 OBJ_SNAKE = $(SRC_SNAKE:.cpp=.o)
 OBJ_NIBBLER = $(SRC_NIBBLER:.cpp=.o)
 OBJ_CORE = $(SRC_CORE:.cpp=.o)
+OBJ_MENU = $(SRC_MENU:.cpp=.o)
 
 all: games graphicals core
 
@@ -71,8 +83,12 @@ $(LIB_NIBBLER): $(OBJ_NIBBLER)
 core: $(CORE)
 
 $(CORE): $(OBJ_CORE)
-	$(CXX) $(OBJ_CORE) -o $(CORE)
+	$(CXX) $(OBJ_CORE) -o $(CORE) $(SDL_FLAGS) $(SFML_FLAGS) $(NCURSES_FLAGS)
 
+menu: $(LIB_MENU)
+
+$(LIB_MENU): $(OBJ_MENU)
+	$(CXX) $(OBJ_MENU) -o $(LIB_MENU) $(SDL_FLAGS) $(SFML_FLAGS) $(NCURSES_FLAGS)
 
 %.o: %.cpp
 	$(CXX) -c -fPIC $< -o $@
@@ -86,7 +102,7 @@ clean:
 	rm -f $(OBJ_CORE) $(OBJ_SFML) $(OBJ_SDL) $(OBJ_NCURSES) $(OBJ_SNAKE) $(OBJ_NIBBLER)
 
 fclean: clean
-	rm -f ./lib/$(CORE) ./lib/$(LIB_SDL) ./lib/$(LIB_SFML) ./lib/$(LIB_NCURSES) ./lib/$(LIB_SNAKE) ./lib/$(LIB_NIBBLER)
+	rm -f $(CORE) ./lib/$(LIB_SDL) ./lib/$(LIB_SFML) ./lib/$(LIB_NCURSES) ./lib/$(LIB_SNAKE) ./lib/$(LIB_NIBBLER)
 
 re: fclean all
 
