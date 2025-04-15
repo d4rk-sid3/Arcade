@@ -170,14 +170,8 @@ void Core::runGame(TrackPack keycode)
     // }
 }
 
-int main(int ac, char **av)
+int handle_error(int ac, char **av)
 {
-    DLLoader<Ncurses> ncurses("./lib_ncurses.so");
-    DLLoader<Sfml> sfml("./lib_sfml.so");
-    DLLoader<Sdl> sdl("./lib_sdl.so");
-    DLLoader<Snake> snake("./lib_snake.so");
-    DLLoader<Nibbler> nibbler("./lib_nibbler.so");
-
     const std::vector <std::string> tab = {"arcade_ndk++.so", "arcade_aalib.so", "arcade_libcaca.so",
         "arcade_allegro5.so", "arcade_xlib.so", "arcade_gtk+.so", "arcade_sfml.so",
         "arcade_irrlicht.so", "arcade_opengl.so", "arcade_vulkan.so", "arcade_qt5.so"};
@@ -194,9 +188,28 @@ int main(int ac, char **av)
     } else
         return 84;
 
-    for (int i = 0; i < tab.size(); i++) {
+    int i = 0;
+
+    for (i; i < tab.size(); i++) {
         if (av[1] == tab[i])
+            break;
     }
+    if (i == tab.size())
+        return 84;
+    
+    return 1;
+}
+
+int main(int ac, char **av)
+{
+    DLLoader<Ncurses> ncurses("./lib_ncurses.so");
+    DLLoader<Sfml> sfml("./lib_sfml.so");
+    DLLoader<Sdl> sdl("./lib_sdl.so");
+    DLLoader<Snake> snake("./lib_snake.so");
+    DLLoader<Nibbler> nibbler("./lib_nibbler.so");
+
+    if (handle_error(ac, av) == 84)
+        return 84;
 
     std::vector<IModuleDisplay *> tmpDisp = {sfml.getInstance(), ncurses.getInstance(), sdl.getInstance()};
     std::vector<IGameModule *> tmpGame = {snake.getInstance(), nibbler.getInstance()};
