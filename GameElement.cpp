@@ -7,6 +7,9 @@
 
 #include "GameElement.hpp"
 
+int current_a;
+int current_b;
+
 GameElement::GameElement()
 {
 }

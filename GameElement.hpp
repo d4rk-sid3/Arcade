@@ -52,5 +52,6 @@ class GameElement {
             return this;
         }
 };
-
+extern int current_a;
+extern int current_b;
 #endif /* !GAMEELEMENT_HPP_ */

@@ -14,7 +14,6 @@
 class Ncurses : public IModuleDisplay {
     public:
     ~Ncurses();
-    Ncurses();
     static Ncurses* getInstance() {
         if (s_pInstance == nullptr) {
             s_pInstance = new Ncurses();
@@ -28,7 +27,12 @@ class Ncurses : public IModuleDisplay {
     void update(std::vector <GameElement> configs) override;
     void stop() override;
     void destroy() override;
-    
+    void handleInput(int value){return;};
+    TrackPack getKeyPressed(){return keyPressed;};
+    void init_menu(){};
+    void draw_menu(){};
+    void update_menu(){};
+    void clean(){};
     protected:
     private:
         std::vector <GameElement> oldState;
@@ -36,6 +40,8 @@ class Ncurses : public IModuleDisplay {
         std::string map;
         WINDOW *win;
         static Ncurses *s_pInstance;
+        Ncurses();
+
 };
 
 #endif /* !NCURES_HPP_ */

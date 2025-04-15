@@ -10,6 +10,10 @@
 #include "SDL2/SDL.h"
 #include <SDL2/SDL_image.h>
 #include "./../../IModuleDisplay.hpp"
+#include "../../TextureManager.hpp"
+#include "../../TextRenderer.hpp"
+#include "../../Player.hpp"
+#include "../../Menu.hpp"
 #include <iostream>
 
 using SDL_infos = std::tuple<int, int, int, int, SDL_Texture*>;
@@ -17,7 +21,6 @@ using SDL_infos = std::tuple<int, int, int, int, SDL_Texture*>;
 class Sdl : public IModuleDisplay {
     public:
         ~Sdl();
-        Sdl();
         static Sdl* getInstance() {
             if (s_pInstance == nullptr) {
                 s_pInstance = new Sdl();
@@ -25,13 +28,21 @@ class Sdl : public IModuleDisplay {
             return s_pInstance;
         }
         void init(std::vector <GameElement> configs) override;
+        void init_menu();
         void handleInput() override;
+        void handleInput(int value);
         TrackPack getEvent() override;
         void draw() override;
+        void draw_menu();
         void update(std::vector <GameElement> configs) override;
+        void update_menu();
         void stop() override;
+        void stop_menu();
         void drawSprite(SDL_infos info);
         void destroy() override;
+        TrackPack getKeyPressed(){return keyPressed;};
+        SDL_Event getEvents(){return event;};
+        void clean();
     
     private:
         TrackPack keyPressed;
@@ -41,6 +52,7 @@ class Sdl : public IModuleDisplay {
         std::vector<SDL_infos> images;
         std::vector <GameElement> oldState;
         static Sdl *s_pInstance;
+        Sdl();
 };
 
 #endif /* !SDL_HPP_ */

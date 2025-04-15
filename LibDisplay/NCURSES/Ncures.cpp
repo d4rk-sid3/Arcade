@@ -119,6 +119,7 @@ TrackPack Ncurses::getEvent()
 void Ncurses::stop()
 {
 }
+
 void Ncurses::destroy()
 {
     oldState.clear();
@@ -127,9 +128,9 @@ void Ncurses::destroy()
 }
 
 extern "C" IModuleDisplay *createInstance() {
-    return new Ncurses();
+    return Ncurses::getInstance();
 }
 
 extern "C" void destroyInstance(IModuleDisplay* instance) {
-    delete instance;
+    //delete instance;
 }
