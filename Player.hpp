@@ -7,7 +7,7 @@
 #include "LibDisplay/SDL/sdl.hpp"
 #include "LibDisplay/SFML/sfml.hpp"
 #include <vector>
-#include <SFML/Graphics.h>
+#include <SFML/Graphics.hpp>
 #include "loader.hpp"
 
 using charValue = std::tuple<std::string, int, int>;

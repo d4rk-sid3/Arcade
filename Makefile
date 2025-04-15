@@ -102,7 +102,7 @@ clean:
 	rm -f $(OBJ_CORE) $(OBJ_SFML) $(OBJ_SDL) $(OBJ_NCURSES) $(OBJ_SNAKE) $(OBJ_NIBBLER)
 
 fclean: clean
-	rm -f ./lib/$(CORE) ./lib/$(LIB_SDL) ./lib/$(LIB_SFML) ./lib/$(LIB_NCURSES) ./lib/$(LIB_SNAKE) ./lib/$(LIB_NIBBLER)
+	rm -f $(CORE) ./lib/$(LIB_SDL) ./lib/$(LIB_SFML) ./lib/$(LIB_NCURSES) ./lib/$(LIB_SNAKE) ./lib/$(LIB_NIBBLER)
 
 re: fclean all
 
