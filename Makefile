@@ -13,7 +13,7 @@ NCURSES_FLAGS = -lncurses
 SDL_FLAGS = -lSDL2 -lSDL2_image
 
 
-LIB_SDL = arcade_sdl.so
+LIB_SDL = arcade_sdl2.so
 LIB_SFML = arcade_sfml.so
 LIB_NCURSES = arcade_ncurses.so
 LIB_SNAKE = arcade_snake.so
