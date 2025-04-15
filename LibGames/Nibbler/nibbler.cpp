@@ -350,3 +350,12 @@ void Nibbler::destroy()
     foods.clear();
     element.clear();
 }
+
+
+extern "C" IGameModule* createInstance() {
+    return new Nibbler();
+}
+
+extern "C" void destroyInstance(IGameModule* instance) {
+    delete instance;
+}

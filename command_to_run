@@ -1,2 +1,4 @@
 sudo apt install doxygen graphviz
 doxygen -g arcadeDoc
+doxygen arcadeDoc 
+index.html

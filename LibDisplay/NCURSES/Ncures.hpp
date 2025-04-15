@@ -14,6 +14,7 @@
 class Ncurses : public IModuleDisplay {
     public:
     ~Ncurses();
+    Ncurses();
     static Ncurses* getInstance() {
         if (s_pInstance == nullptr) {
             s_pInstance = new Ncurses();
@@ -30,7 +31,6 @@ class Ncurses : public IModuleDisplay {
     
     protected:
     private:
-        Ncurses();
         std::vector <GameElement> oldState;
         TrackPack keyPressed;
         std::string map;

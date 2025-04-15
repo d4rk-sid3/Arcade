@@ -10,6 +10,7 @@
 #include "LibDisplay/SDL/sdl.hpp"
 #include "LibDisplay/SFML/sfml.hpp"
 #include "LibGames/Snake/Snake.hpp"
+#include "loader.hpp"
 
 enum update_return
 {
@@ -169,12 +170,19 @@ void Core::runGame(TrackPack keycode)
     // }
 }
 
-int main(void)
+int main(int ac, char **av)
 {
-   std::vector<IModuleDisplay *> tmpDisp = {Sfml::getInstance(), Ncurses::getInstance(), Sdl::getInstance()};
-   std::vector<IGameModule *> tmpGame = {new Snake, new Nibbler};
-   Core core(tmpGame, tmpDisp, 0, 0);
-   TrackPack keycode = NONE;
+    DLLoader<Ncurses> ncurses("./lib_ncurses.so");
+    DLLoader<Sfml> sfml("./lib_sfml.so");
+    DLLoader<Sdl> sdl("./lib_sdl.so");
+    DLLoader<Snake> snake("./lib_snake.so");
+    DLLoader<Nibbler> nibbler("./lib_nibbler.so");
+
+    std::vector<IModuleDisplay *> tmpDisp = {sfml.getInstance(), ncurses.getInstance(), sdl.getInstance()};
+    std::vector<IGameModule *> tmpGame = {snake.getInstance(), nibbler.getInstance()};
+
+    Core core(tmpGame, tmpDisp, 0, 0);
+    TrackPack keycode = NONE;
 
     core.runGame(keycode);
 }

@@ -14,6 +14,7 @@
 class Sfml : public IModuleDisplay {
     public:
         ~Sfml();
+        Sfml();
         static Sfml* getInstance() {
             if (s_pInstance == nullptr) {
                 s_pInstance = new Sfml();
@@ -29,7 +30,6 @@ class Sfml : public IModuleDisplay {
         void destroy() override;
 
     private:
-        Sfml();
         TrackPack keyPressed;
         sf::RenderWindow window;
         sf::Event event;

@@ -136,3 +136,11 @@ void Sfml::destroy()
     }
     images.clear();
 }
+
+extern "C" IModuleDisplay* createInstance() {
+    return new Sfml();
+}
+
+extern "C" void destroyInstance(IModuleDisplay *instance) {
+    delete instance;
+}

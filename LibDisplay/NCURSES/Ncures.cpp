@@ -125,3 +125,11 @@ void Ncurses::destroy()
     delwin(win);
     endwin();
 }
+
+extern "C" IModuleDisplay *createInstance() {
+    return new Ncurses();
+}
+
+extern "C" void destroyInstance(IModuleDisplay* instance) {
+    delete instance;
+}
