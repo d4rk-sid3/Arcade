@@ -196,8 +196,6 @@ int handle_error(int ac, char **av)
             break;
     }
 
-    std::cout << i << std::endl;
-    std::cout << tab.size() << std::endl;
     if (i == tab.size()) {
         return 84;
     }

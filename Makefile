@@ -23,11 +23,11 @@ CORE = arcade
 SRC_CORE =        		main.cpp \
                   		GameElement.cpp
 
-SRC_SFML =        		LibDisplay/SFML/sfml.cpp
-SRC_SDL =         		LibDisplay/SDL/sdl.cpp
-SRC_NCURSES =     		LibDisplay/NCURSES/Ncures.cpp
-SRC_SNAKE =        		LibGames/Snake/Snake.cpp
-SRC_NIBBLER =         	LibGames/Nibbler/nibbler.cpp
+SRC_SFML =        		LibDisplay/SFML/sfml.cpp GameElement.cpp 
+SRC_SDL =         		LibDisplay/SDL/sdl.cpp GameElement.cpp
+SRC_NCURSES =     		LibDisplay/NCURSES/Ncures.cpp GameElement.cpp
+SRC_SNAKE =        		LibGames/Snake/Snake.cpp GameElement.cpp
+SRC_NIBBLER =         	LibGames/Nibbler/nibbler.cpp GameElement.cpp
 
 OBJ_SDL = $(SRC_SDL:.cpp=.o)
 OBJ_SFML = $(SRC_SFML:.cpp=.o)
