@@ -36,7 +36,7 @@ OBJ_SNAKE = $(SRC_SNAKE:.cpp=.o)
 OBJ_NIBBLER = $(SRC_NIBBLER:.cpp=.o)
 OBJ_CORE = $(SRC_CORE:.cpp=.o)
 
-all: $(CORE)
+all: games graphicals core
 
 ncurses: $(LIB_NCURSES)
 
