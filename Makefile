@@ -41,27 +41,32 @@ all: $(CORE)
 ncurses: $(LIB_NCURSES)
 
 $(LIB_NCURSES): $(OBJ_NCURSES)
-	$(CXX) $(OBJ_NCURSES) -o $(LIB_NCURSES) -shared $(NCURSES_FLAGS)
+	mkdir -p lib
+	$(CXX) $(OBJ_NCURSES) -o ./lib/$(LIB_NCURSES) -shared $(NCURSES_FLAGS)
 
 sfml: $(LIB_SFML)
 
 $(LIB_SFML): $(OBJ_SFML)
-	$(CXX) $(OBJ_SFML) -o $(LIB_SFML) -shared $(SFML_FLAGS)
+	mkdir -p lib
+	$(CXX) $(OBJ_SFML) -o ./lib/$(LIB_SFML) -shared $(SFML_FLAGS)
 
 sdl: $(LIB_SDL)
 
 $(LIB_SDL): $(OBJ_SDL)
-	$(CXX) $(OBJ_SDL) -o $(LIB_SDL) -shared $(SDL_FLAGS)
+	mkdir -p lib
+	$(CXX) $(OBJ_SDL) -o ./lib/$(LIB_SDL) -shared $(SDL_FLAGS)
 
 snake: $(LIB_SNAKE)
 
 $(LIB_SNAKE): $(OBJ_SNAKE)
-	$(CXX) $(OBJ_SNAKE) -o $(LIB_SNAKE) -shared
+	mkdir -p lib
+	$(CXX) $(OBJ_SNAKE) -o ./lib/$(LIB_SNAKE) -shared
 
 nibbler: $(LIB_NIBBLER)
 
 $(LIB_NIBBLER): $(OBJ_NIBBLER)
-	$(CXX) $(OBJ_NIBBLER) -o $(LIB_NIBBLER) -shared
+	mkdir -p lib
+	$(CXX) $(OBJ_NIBBLER) -o ./lib/$(LIB_NIBBLER) -shared
 
 core: $(CORE)
 
@@ -81,7 +86,7 @@ clean:
 	rm -f $(OBJ_CORE) $(OBJ_SFML) $(OBJ_SDL) $(OBJ_NCURSES) $(OBJ_SNAKE) $(OBJ_NIBBLER)
 
 fclean: clean
-	rm -f $(CORE) $(LIB_SDL) $(LIB_SFML) $(LIB_NCURSES) $(LIB_SNAKE) $(LIB_NIBBLER)
+	rm -f ./lib/$(CORE) ./lib/$(LIB_SDL) ./lib/$(LIB_SFML) ./lib/$(LIB_NCURSES) ./lib/$(LIB_SNAKE) ./lib/$(LIB_NIBBLER)
 
 re: fclean all
 

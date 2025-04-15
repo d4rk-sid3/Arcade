@@ -178,6 +178,26 @@ int main(int ac, char **av)
     DLLoader<Snake> snake("./lib_snake.so");
     DLLoader<Nibbler> nibbler("./lib_nibbler.so");
 
+    const std::vector <std::string> tab = {"arcade_ndk++.so", "arcade_aalib.so", "arcade_libcaca.so",
+        "arcade_allegro5.so", "arcade_xlib.so", "arcade_gtk+.so", "arcade_sfml.so",
+        "arcade_irrlicht.so", "arcade_opengl.so", "arcade_vulkan.so", "arcade_qt5.so"};
+
+    if (ac != 2) {
+        return 84;
+    }
+
+    std::ifstream flux(av[1]);
+
+    if (flux.is_open()) {
+        std::cout << "Le fichier existe !" << std::endl;
+        flux.close();
+    } else
+        return 84;
+
+    for (int i = 0; i < tab.size(); i++) {
+        if (av[1] == tab[i])
+    }
+
     std::vector<IModuleDisplay *> tmpDisp = {sfml.getInstance(), ncurses.getInstance(), sdl.getInstance()};
     std::vector<IGameModule *> tmpGame = {snake.getInstance(), nibbler.getInstance()};
 
