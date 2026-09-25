@@ -1,3 +1,20 @@
-html
-.vscode
+# Build artifacts
+*.o
+*.so
+*.a
+/arcade
+/lib/
+
+# Generated documentation
+/html/
+/latex/
+/docs/html/
+
+# Editors & backups
+.vscode/
+.idea/
+*.bak
+*~
+
+# Draft files kept out of the build
 logique.cpp
