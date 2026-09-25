@@ -14,21 +14,25 @@ int handle_error(int ac, char **av)
         "./lib/arcade_irrlicht.so", "./lib/arcade_opengl.so", "./lib/arcade_vulkan.so", "./lib/arcade_qt5.so"
         , "./lib/arcade_ncurses.so", "./lib/arcade_sdl2.so"};
 
-    if (ac != 2)
+    if (ac != 2) {
+        std::cerr << "USAGE: " << av[0] << " ./lib/arcade_<graphics>.so" << std::endl;
         return 84;
+    }
     std::ifstream flux(av[1]);
-    if (flux.is_open()) {
-        std::cout << "Le fichier existe !" << std::endl;
-        flux.close();
-    } else
+    if (!flux.is_open()) {
+        std::cerr << "arcade: cannot open " << av[1] << std::endl;
         return 84;
-    int i = 0;
-    for (i; i < tab.size(); i++) {
+    }
+    flux.close();
+    std::size_t i = 0;
+    for (; i < tab.size(); i++) {
         if (av[1] == tab[i])
             break;
     }
-    if (i == tab.size())
+    if (i == tab.size()) {
+        std::cerr << "arcade: " << av[1] << " is not a known graphics library" << std::endl;
         return 84;
+    }
     return 1;
 }
 
